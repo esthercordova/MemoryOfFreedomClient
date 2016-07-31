@@ -17,46 +17,29 @@ const failure = (error) => {
   console.error(error);
 };
 
-// const clickthis = function () {
-//   $('#question').html(showQuestionTemplate(data));
-// };
-//  let data = {animal : "fish"};
-
-
  const populatingQuestions = function (data) {
   let questions = data["questions"];
+  let i = 0;
+  let question = questions[i];
+  $("#question").html(showQuestionTemplate(question));
 
-   for (var i = 0; i < questions.length; i++) {
-     let question = questions[i];
-     $("#question").html(showQuestionTemplate(question));
-     $("button").click(function() {
+  $(document.body).on('click', '.answerButton', function () {
     let clickedButton = this.id;
+    i++;
+    $("#question").html(showQuestionTemplate(questions[i]));
     if (clickedButton === "right") {
       console.log("this is the got it button with id: ", clickedButton);
+      // make api patch to update status and pass questions[i]
     } else {
       console.log("this is the next time button with id: ", clickedButton);
-    };
-
+    }
    });
-   };
+ };
 
   //  let question = questions[0]
   //  console.log("this is the whole question ", questions[0]);
   //  console.log("this is the title ", questions[0].title);
   //  console.log("this is the answers array ", questions[0].answer);
-
- };
- //
- // const populatingQuestions = function (data) {
- //  console.log(data);
- //
- //   let questions = data["questions"];
- //   let question = questions[0]
- //   console.log("this is the whole question ", questions[0]);
- //  //  console.log("this is the title ", questions[0].title);
- //  //  console.log("this is the answers array ", questions[0].answer);
- //  $("#question").html(showQuestionTemplate(question));
- // };
 
 module.exports = {
   success,

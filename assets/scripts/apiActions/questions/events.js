@@ -17,7 +17,6 @@ const onPopulatingQuestions = () => {
 };
 
 const addHandlers = () => {
- // $('#dog').on('click', onPopulatingQuestions);
 };
 
 module.exports = {
