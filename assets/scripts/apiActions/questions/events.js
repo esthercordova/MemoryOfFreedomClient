@@ -10,15 +10,14 @@ const callClickThis = () => {
   ui.clickthis();
 };
 
-const onPopulatingQuestions = (event) => {
-  event.preventDefault();
+const onPopulatingQuestions = () => {
   api.showQuestions()
   .done(ui.populatingQuestions)
   .fail(ui.failure);
 };
 
 const addHandlers = () => {
-  $('#dog').on('click', onPopulatingQuestions);
+ // $('#dog').on('click', onPopulatingQuestions);
 };
 
 module.exports = {

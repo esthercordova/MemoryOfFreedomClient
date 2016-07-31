@@ -22,9 +22,10 @@ const failure = (error) => {
 // };
 //  let data = {animal : "fish"};
 
+
  const populatingQuestions = function (data) {
    console.log(data);
-   $('#question').html(showQuestionTemplate(data));
+  $("#question").html(showQuestionTemplate(data));
  };
 
 module.exports = {

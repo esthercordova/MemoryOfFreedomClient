@@ -1,8 +1,15 @@
 <!-- <h1>This is in the template {{animal}}</h1> -->
 
-<h1> Question headline </h1>
+<!-- {{questions.[1].title}}
+{{questions.[1].answer}} -->
 
-<!-- with s or without? -->
+{{#each questions}}
 
-{{questions.[1].title}}
-{{questions.[1].answer}}
+<h4>{{title}}</h4>
+<ul>
+  <li>{{answer}}</li>
+</ul>
+
+<button id="right" class="btn btn-secondary">Got it right!</button>
+<button id="wrong" class="btn btn-secondary">Next time</button>
+{{/each}}
