@@ -1,20 +1,21 @@
-<!-- <h1>This is in the template {{animal}}</h1> -->
 
-<!-- {{questions.[1].title}}
-{{questions.[1].answer}} -->
-
-{{#each questions}}
+<!-- <h4>{{questions.[0].title}}</h4>
+<ul>
+  <li>{{questions.[0].answer}}</li>
+</ul> -->
 
 <h4>{{title}}</h4>
+{{#each answer}}
 <ul>
-  <li>{{answer}}</li>
+  <li>{{this}}</li>
 </ul>
+{{/each}}
 
 <button id="right" class="btn btn-info">Got it right!</button>
 <button id="wrong" class="btn btn-info">Next time</button>
-{{/each}}
 
-<h5> Statistic </h5>
+
+<h5> Your Knowlege Bucktes </h5>
 
 <table style="width:100%">
   <tr>

@@ -24,12 +24,16 @@ const failure = (error) => {
 
 
  const populatingQuestions = function (data) {
-   console.log(data);
-  $("#question").html(showQuestionTemplate(data));
+  console.log(data);
+   let questions = data["questions"];
+   let question = questions[0]
+   console.log("this is the whole question ", questions[0]);
+  //  console.log("this is the title ", questions[0].title);
+  //  console.log("this is the answers array ", questions[0].answer);
+  $("#question").html(showQuestionTemplate(question));
  };
 
 module.exports = {
-  // clickthis,
   success,
   failure,
   populatingQuestions,
