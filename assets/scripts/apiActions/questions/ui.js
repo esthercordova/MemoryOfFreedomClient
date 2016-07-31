@@ -24,14 +24,39 @@ const failure = (error) => {
 
 
  const populatingQuestions = function (data) {
-  console.log(data);
-   let questions = data["questions"];
-   let question = questions[0]
-   console.log("this is the whole question ", questions[0]);
+  let questions = data["questions"];
+
+   for (var i = 0; i < questions.length; i++) {
+     let question = questions[i];
+     $("#question").html(showQuestionTemplate(question));
+     $("button").click(function() {
+    let clickedButton = this.id;
+    if (clickedButton === "right") {
+      console.log("this is the got it button with id: ", clickedButton);
+    } else {
+      console.log("this is the next time button with id: ", clickedButton);
+    };
+
+   });
+   };
+
+  //  let question = questions[0]
+  //  console.log("this is the whole question ", questions[0]);
   //  console.log("this is the title ", questions[0].title);
   //  console.log("this is the answers array ", questions[0].answer);
-  $("#question").html(showQuestionTemplate(question));
+
  };
+ //
+ // const populatingQuestions = function (data) {
+ //  console.log(data);
+ //
+ //   let questions = data["questions"];
+ //   let question = questions[0]
+ //   console.log("this is the whole question ", questions[0]);
+ //  //  console.log("this is the title ", questions[0].title);
+ //  //  console.log("this is the answers array ", questions[0].answer);
+ //  $("#question").html(showQuestionTemplate(question));
+ // };
 
 module.exports = {
   success,
