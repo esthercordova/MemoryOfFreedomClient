@@ -54,7 +54,6 @@ const failure = (error) => {
 
  const populatingQuestions = function (data) {
 
-
   let questions = data.questions;
   let i = 0;
   let question = questions[i];
