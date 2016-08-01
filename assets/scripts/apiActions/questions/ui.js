@@ -53,28 +53,29 @@ const failure = (error) => {
 
 
  const populatingQuestions = function (data) {
-
   let questions = data.questions;
   let i = 0;
   let question = questions[i];
+
   $("#question").html(showQuestionTemplate(question));
 
-
+  //when button clicked than show next question
   $(document.body).on('click', '.answerButton', function () {
     let clickedButton = this.id;
     i++;
     $("#question").html(showQuestionTemplate(questions[i]));
     if (clickedButton === "right") {
-      console.log("this is the got it button with id: ", clickedButton);
-      // make api patch to update status and pass questions[i]
+      let status = "easy";
       // because of variable scope has be be required here again
       let questionsEvents = require('./events.js');
       let question_id = questions[i-1].id;
-      console.log("this is the questions id ", question_id);
-      questionsEvents.onChangeQuestionStatus(question_id);
-
-    } else {
-      console.log("this is the next time button with id: ", clickedButton);
+      // console.log("this is the questions id ", question_id);
+      questionsEvents.onChangeQuestionStatus(question_id, status);
+      } else {
+      let status = "hard";
+      let questionsEvents = require('./events.js');
+      let question_id = questions[i-1].id;
+      questionsEvents.onChangeQuestionStatus(question_id, status);
     }
    });
  };
