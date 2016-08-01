@@ -17,7 +17,8 @@ const failure = (error) => {
 
 const signInSuccess = (data) => {
   app.user = data.user;
-  questionsEvents.onPopulatingQuestions();
+  questionsEvents.onPopulatingBuckets();
+  // questionsEvents.onPopulatingQuestions();
 };
 
 const signOutSuccess = function (){

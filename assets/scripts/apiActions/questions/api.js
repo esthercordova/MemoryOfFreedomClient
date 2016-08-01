@@ -2,6 +2,16 @@
 
 const app = require('../../app.js');
 
+const showBuckets = () => {
+  return $.ajax({
+    url: app.host + '/user_questions',
+    method: "GET",
+    headers: {
+      Authorization: 'Token token=' + app.user.token,
+    }
+  });
+};
+
 const showQuestions = () => {
   return $.ajax({
     url: app.host + '/questions' ,
@@ -45,17 +55,9 @@ const createQuestionInJointTable = (status, user_id, question_id, notes) => {
 });
 };
 
-// const createQuestionInJointTable = (status, user_id, question_id, notes) => {
-//   return $.ajax({
-//   method: 'GET',
-//   url: app.host + '/user_questions',
-//   headers: {
-//     Authorization: 'Token token=' + app.user.token,
-//   },
-// });
-// };
 
 module.exports = {
+  showBuckets,
   showQuestions,
   changeQuestionStatus,
   createQuestionInJointTable,
