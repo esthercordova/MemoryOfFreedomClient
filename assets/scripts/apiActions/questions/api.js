@@ -20,7 +20,7 @@ const showBuckets = () => {
 
 const getStatusStatistics = () => {
   return $.ajax({
-    url: app.host + '/user_questions?status=easy',
+    url: app.host + '/user_questions',
     method: "GET",
     headers: {
       Authorization: 'Token token=' + app.user.token,
@@ -28,26 +28,6 @@ const getStatusStatistics = () => {
   });
 };
 
-// const showMediumBuckets = () => {
-//  return $.ajax({
-//     url: app.host + '/user_questions?status=medium',
-//     method: "GET",
-//     headers: {
-//       Authorization: 'Token token=' + app.user.token,
-//     }
-//   });
-// };
-//
-// const showHardBuckets = () => {
-//   return $.ajax({
-//     url: app.host + '/user_questions?status=hard',
-//     method: "GET",
-//     headers: {
-//       Authorization: 'Token token=' + app.user.token,
-//     }
-//   });
-// };
-//
 const showQuestions = () => {
   return $.ajax({
     url: app.host + '/questions' ,
@@ -91,13 +71,21 @@ const createQuestionInJointTable = (status, user_id, question_id, notes) => {
 });
 };
 
+// const checkIfFirstRound = () => {
+//   return $.ajax({
+//     url: app.host + '/user_questions',
+//     method: "GET",
+//     headers: {
+//       Authorization: 'Token token=' + app.user.token,
+//     }
+//   });
+// };
+
 module.exports = {
   showBuckets,
   showQuestions,
   changeQuestionStatus,
-  createQuestionInJointTable,
+  // createQuestionInJointTable,
   getStatusStatistics,
-  // showEasyBuckets,
-  // showMediumBuckets,
-  // showHardBuckets
+  // checkIfFirstRound
 };

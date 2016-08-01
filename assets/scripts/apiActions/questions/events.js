@@ -5,12 +5,6 @@ const api = require('./api');
 const ui = require('./ui');
 const app = require('../../app');
 
-const onPopulatingBuckets = () => {
-  api.showBuckets()
-  .done(ui.populatingBuckets)
-  .fail(ui.failure);
-};
-
 const onPopulatingQuestions = () => {
   api.showQuestions()
   .done(ui.populatingQuestions)
@@ -21,7 +15,8 @@ const onChangeQuestionStatus = (question_id, status) => {
   let user_id = app.user.id;
   let notes = "";
   console.log("here and status is ", status ," and id is ", question_id);
-  api.createQuestionInJointTable(status, user_id, question_id, notes)
+  // api.createQuestionInJointTable(status, user_id, question_id, notes)
+  api.checkIfFirstRound()
   .done(ui.success)
   .fail(ui.failure);
 };
@@ -33,6 +28,17 @@ const onShowStatictics = (event) => {
   .fail(ui.failure);
 };
 
+// const onCheckIfFirstRound = () => {
+//   api.checkIfFirstRound()
+//   .done(ui.success)
+//   .fail(ui.failure);
+// };
+
+// const onPopulatingBuckets = () => {
+//   api.showBuckets()
+//   .done(ui.populatingBuckets)
+//   .fail(ui.failure);
+// };
 // const onChangeQuestionStatusToEasy = (question_id) => {
 //   let status = "easy";
 //   let user_id = app.user.id;
@@ -70,10 +76,11 @@ const addHandlers = () => {
 
 module.exports = {
   addHandlers,
-  onPopulatingBuckets,
+  // onPopulatingBuckets,
   onPopulatingQuestions,
   onChangeQuestionStatus,
   onShowStatictics,
+  // onCheckIfFirstRound,
   // onChangeQuestionStatusToEasy,
   // onChangeQuestionStatusToMedium,
   // onChangeQuestionStatusToHard,
