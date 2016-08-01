@@ -26,6 +26,12 @@ const onChangeQuestionStatus = (question_id, status) => {
   .fail(ui.failure);
 };
 
+const onShowStatictics = (event) => {
+  event.preventDefault();
+  api.getStatusStatistics()
+  .done(ui.gettingStatistics)
+  .fail(ui.failure);
+};
 
 // const onChangeQuestionStatusToEasy = (question_id) => {
 //   let status = "easy";
@@ -57,8 +63,9 @@ const onChangeQuestionStatus = (question_id, status) => {
 //   .fail(ui.failure);
 // };
 
-
 const addHandlers = () => {
+  $(document).on('click','#right', onShowStatictics);
+  $(document).on('click','#wrong', onShowStatictics);
 };
 
 module.exports = {
@@ -66,6 +73,7 @@ module.exports = {
   onPopulatingBuckets,
   onPopulatingQuestions,
   onChangeQuestionStatus,
+  onShowStatictics,
   // onChangeQuestionStatusToEasy,
   // onChangeQuestionStatusToMedium,
   // onChangeQuestionStatusToHard,

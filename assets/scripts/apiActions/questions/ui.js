@@ -6,6 +6,7 @@ let questionsEvents = require('./events.js');
 
 const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
 const showBucketsTemplate = require('../../../templates/showbuckets.handlebars');
+const showStatisticTemplate = require('../../../templates/statistic.handlebars');
 
 const success = (data) => {
   if (data) {
@@ -27,29 +28,29 @@ const failure = (error) => {
   console.error(error);
 };
 
-// const populatingBuckets = function (data) {
-//   let user_questions = data.user_questions;
-//   console.log("this is data", data);
-//   console.log("user questions is this : ", user_questions);
-//   $("#question").html(showBucketsTemplate(data));
-//   // console.log("this is status from first question", user_questions[0].status);
-//   // console.log("this is user id from question 4 " + user_questions[4]["user"].id);
-//   //
-//   // // loop through data and
-//   // // check if user id is current user
-//   // // count status from current user into buckets
-//   //
-//   $.each(user_questions, function(key, value) {
-//     console.log("current user id" , app.user.id)
-//     console.log( value.status, value.user.id);
-//     // if()
-//   });
+const gettingStatistics = function (data) {
+  let user_questions = data.user_questions;
+  console.log("this is data", data);
+  console.log("user questions is this : ", user_questions);
+  $("#statistic").html(showStatisticTemplate(data));
+  // console.log("this is status from first question", user_questions[0].status);
+  // console.log("this is user id from question 4 " + user_questions[4]["user"].id);
+  //
+  // // loop through data and
+  // // check if user id is current user
+  // // count status from current user into buckets
+  //
+  $.each(user_questions, function(key, value) {
+    console.log("current user id" , app.user.id);
+    console.log( value.status, value.user.id);
+
+  });
 //
 //   let easyBucket = 10;
 //   let mediumBucket = 12;
 //   let hardBucket = 12;
 //
-// };
+};
 
 
  const populatingQuestions = function (data) {
@@ -71,6 +72,7 @@ const failure = (error) => {
       let question_id = questions[i-1].id;
       // console.log("this is the questions id ", question_id);
       questionsEvents.onChangeQuestionStatus(question_id, status);
+
       } else {
       let status = "hard";
       let questionsEvents = require('./events.js');
@@ -87,7 +89,7 @@ const failure = (error) => {
 module.exports = {
   success,
   failure,
-  // populatingBuckets,
+  gettingStatistics,
   populatingQuestions,
   changeQuestionStatusSuccess,
 };
