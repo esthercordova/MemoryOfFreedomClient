@@ -3,6 +3,12 @@
 const app = require('../../app.js');
 
 const showBuckets = () => {
+  // if hard then endpoint = /user_questions?status=hard
+  // else if medium endpoint = /user_questions?status=medium
+  //
+  // maybe in another function?
+  // Promise.all[apiRequestForHard, apiRequestForMedium...]
+
   return $.ajax({
     url: app.host + '/user_questions',
     method: "GET",
@@ -11,6 +17,24 @@ const showBuckets = () => {
     }
   });
 };
+
+// const showEasyBuckets = () => {
+//   return $.ajax({
+//     url: app.host + '/user_questions?status=easy',
+//     method: "GET",
+//     headers: {
+//       Authorization: 'Token token=' + app.user.token,
+//     }
+//   });
+// };
+//
+// const showMediumBuckets = () => {
+//
+// };
+//
+// const showHardBuckets = () => {
+//
+// };
 
 const showQuestions = () => {
   return $.ajax({
@@ -61,4 +85,7 @@ module.exports = {
   showQuestions,
   changeQuestionStatus,
   createQuestionInJointTable,
+  // showEasyBuckets,
+  // showMediumBuckets,
+  // showHardBuckets
 };

@@ -2,6 +2,8 @@
 const app = require('../../app.js');
 
 const questionsEvents = require('../questions/events.js');
+const showStartTemplate = require('../../../templates/start.handlebars');
+const showQuestionTemplate = require('../../../templates/showquestion.handlebars')
 
 const success = (data) => {
   if(data){
@@ -17,8 +19,11 @@ const failure = (error) => {
 
 const signInSuccess = (data) => {
   app.user = data.user;
-  questionsEvents.onPopulatingBuckets();
-  // questionsEvents.onPopulatingQuestions();
+  $(".start").html(showStartTemplate(data));
+
+  $(document.body).on('click', '#start', function () {
+    $(".start").html(showQuestionTemplate(data));
+  });
 };
 
 const signOutSuccess = function (){
@@ -32,5 +37,4 @@ module.exports = {
   success,
   signInSuccess,
   signOutSuccess,
-
 };

@@ -5,11 +5,6 @@ const api = require('./api');
 const ui = require('./ui');
 const app = require('../../app');
 
-const callClickThis = () => {
-  console.log("button clicked");
-  ui.clickthis();
-};
-
 const onPopulatingBuckets = () => {
   api.showBuckets()
   .done(ui.populatingBuckets)
