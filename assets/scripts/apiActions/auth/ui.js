@@ -6,11 +6,12 @@ const showStartTemplate = require('../../../templates/start.handlebars');
 const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
 
 const success = (data) => {
+  console.log("data in success is ", data);
   if(data){
-  console.log(data);
-} else {
-  console.log("success");
-}
+    console.log(data);
+  } else {
+    console.log("success");
+  }
 };
 
 const failure = (error) => {
@@ -20,6 +21,7 @@ const failure = (error) => {
 const signInSuccess = (data) => {
   app.user = data.user;
   $(".start").html(showStartTemplate(data));
+  return data;
 };
 
 const signOutSuccess = function (){

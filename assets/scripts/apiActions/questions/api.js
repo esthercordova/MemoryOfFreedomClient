@@ -2,20 +2,21 @@
 
 const app = require('../../app.js');
 
-const showBuckets = () => {
-  // if hard then endpoint = /user_questions?status=hard
-  // else if medium endpoint = /user_questions?status=medium
-  //
-  // maybe in another function?
-  // Promise.all[apiRequestForHard, apiRequestForMedium...]
-
+const createUserQuestions = (data, status, user_id, question_id, notes) => {
   return $.ajax({
-    url: app.host + '/user_questions',
-    method: "GET",
-    headers: {
-      Authorization: 'Token token=' + app.user.token,
+  method: 'POST',
+  url: app.host + '/user_questions',
+  headers: {
+    Authorization: 'Token token=' + app.user.token,
+  },
+  data:
+    {"user_question":{ "status":"hard",
+                        "user_id":app.user.id,
+                        "question_id":question_id,
+                        "notes": "",
+                      }
     }
-  });
+});
 };
 
 const getStatusStatistics = () => {
@@ -54,22 +55,22 @@ const changeQuestionStatus = (status, user_id, question_id, notes) => {
 });
 };
 
-const createQuestionInJointTable = (status, user_id, question_id, notes) => {
-  return $.ajax({
-  method: 'POST',
-  url: app.host + '/user_questions',
-  headers: {
-    Authorization: 'Token token=' + app.user.token,
-  },
-  data:
-    {"user_question":{ "status":status,
-                        "user_id":user_id,
-                        "question_id":question_id,
-                        "notes":notes,
-                      }
-    }
-});
-};
+// const createStatusForQuestion = (status, user_id, question_id, notes) => {
+//   return $.ajax({
+//   method: 'POST',
+//   url: app.host + '/user_questions',
+//   headers: {
+//     Authorization: 'Token token=' + app.user.token,
+//   },
+//   data:
+//     {"user_question":{ "status":status,
+//                         "user_id":user_id,
+//                         "question_id":question_id,
+//                         "notes":notes,
+//                       }
+//     }
+// });
+// };
 
 const saveStatus = (status, user_id, question_id, notes) => {
   return $.ajax({
@@ -89,11 +90,11 @@ const saveStatus = (status, user_id, question_id, notes) => {
 };
 
 module.exports = {
-  showBuckets,
+  // showBuckets,
   showQuestions,
   changeQuestionStatus,
-  createQuestionInJointTable,
+  // createStatusForQuestion,
   getStatusStatistics,
-  saveStatus
-  // checkIfFirstRound
+  saveStatus,
+  createUserQuestions
 };

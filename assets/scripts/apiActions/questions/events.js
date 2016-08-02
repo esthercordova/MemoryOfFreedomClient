@@ -28,12 +28,9 @@ const onPopulatingQuestions = () => {
 //   .fail(ui.failure);
 //   };
 
-
-
   // api.changeQuestionStatus(status, user_id, question_id, notes)
   // .done(ui.success)
   // .fail(ui.failure);
-
 
 const onShowStatictics = (event) => {
   event.preventDefault();
@@ -61,11 +58,23 @@ const onSaveStatusHard = () => {
   .done(ui.success)
   .fail(ui.failure);
 };
+
+// const onCreateStatusForQuestion = (question_id) => {
+//   let user_id = app.user.id;
+//   let status = "";
+//   let notes = "";
+//   console.log(status, user_id, question_id, notes);
+//   api.createStatusForQuestion(status, user_id, question_id, notes)
+//   .done(ui.success)
+//   .fail(ui.failure);
+// };
+
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
   $(document).on( 'click', '#start',onPopulatingQuestions);
-  $(document).on( 'click', '#right',onSaveStatusEasy);
-  $(document).on( 'click', '#wrong',onSaveStatusHard);
+  // $(document).on( 'click', '#right',onSaveStatusEasy);
+  // $(document).on( 'click', '#wrong',onSaveStatusHard);
+  // $(document).on( 'click', '#right',onCreateStatusForQuestion);
 };
 
 module.exports = {
@@ -76,6 +85,7 @@ module.exports = {
   onShowStatictics,
   onSaveStatusEasy,
   onSaveStatusHard,
+  // onCreateStatusForQuestion,
   // onShowAndSaveStatus,
   // onCheckIfFirstRound,
   // onChangeQuestionStatusToEasy,
