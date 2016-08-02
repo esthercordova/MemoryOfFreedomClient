@@ -15,47 +15,19 @@ const onSignUp = function(event){
   })
   .then(api.signUp)
   .then((signUpData) => {
-    console.log("inside 1st then signUpData is ", signUpData);
-    console.log("inside 1st then data is ", credentials);
+    // console.log("inside 1st then signUpData is ", signUpData);
+    // console.log("inside 1st then data is ", credentials);
     ui.success(signUpData);
     return credentials;
   })
-  // .then(() => {
-  //   api.signIn(credentials)
-  // })
   .then(api.signIn)
   .then(ui.signInSuccess)
-  // sign in success
-  // load questions -- POST
-  // load questions success
   .then((data) => {
-    console.log("we are one step closer to be happy", data);
     questionApi.createUserQuestions(data);
-    console.log("this is data in the last step", data);
   })
-
-
   .catch((err) => {
     console.log(err);
   });
-
-
-  // .then((data) => {
-  //
-  //   console.log("before");
-  //   console.log("app is ", app);
-  //   let user_id = app.user.id;
-  //   console.log(data);
-  //   console.log("user_id ", user_id);
-  //   // let user_id = data.user.id;
-  //   // console.log("user id ", user_id);
-  //   let notes = "";
-  //   let status = "";
-  //   questionApi.createUserQuestions(user_id, notes, status)
-  //   .done(ui.success)
-  //   .fail(ui.failure);
-  // })
-  // .fail(ui.failure);
 };
 
 const onSignIn = function(event){
