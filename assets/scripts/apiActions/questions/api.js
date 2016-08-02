@@ -71,21 +71,29 @@ const createQuestionInJointTable = (status, user_id, question_id, notes) => {
 });
 };
 
-// const checkIfFirstRound = () => {
-//   return $.ajax({
-//     url: app.host + '/user_questions',
-//     method: "GET",
-//     headers: {
-//       Authorization: 'Token token=' + app.user.token,
-//     }
-//   });
-// };
+const saveStatus = (status, user_id, question_id, notes) => {
+  return $.ajax({
+  method: 'POST',
+  url: app.host + '/user_questions',
+  headers: {
+    Authorization: 'Token token=' + app.user.token,
+  },
+  data:
+    {"user_question":{ "status":status,
+                        "user_id":user_id,
+                        "question_id":question_id,
+                        "notes":notes,
+                      }
+    }
+});
+};
 
 module.exports = {
   showBuckets,
   showQuestions,
   changeQuestionStatus,
-  // createQuestionInJointTable,
+  createQuestionInJointTable,
   getStatusStatistics,
+  saveStatus
   // checkIfFirstRound
 };

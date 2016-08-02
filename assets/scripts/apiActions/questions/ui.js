@@ -74,6 +74,7 @@ const gettingStatistics = function (data) {
       // questionsEvents.onChangeQuestionStatus(question_id, status);
     }
    });
+   console.log("data", data)
  };
   //  let question = questions[0]
   //  console.log("this is the whole question ", questions[0]);
