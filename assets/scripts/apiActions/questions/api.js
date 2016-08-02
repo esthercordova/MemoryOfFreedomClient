@@ -2,7 +2,7 @@
 
 const app = require('../../app.js');
 
-const createUserQuestions = (data, status, user_id, question_id, notes) => {
+const createUserQuestions = (data, question_id) => {
   return $.ajax({
   method: 'POST',
   url: app.host + '/user_questions',
@@ -12,7 +12,7 @@ const createUserQuestions = (data, status, user_id, question_id, notes) => {
   data:
     {"user_question":{ "status":"hard",
                         "user_id":app.user.id,
-                        "question_id":question_id,
+                        "question_id": question_id,
                         "notes": "",
                       }
     }
