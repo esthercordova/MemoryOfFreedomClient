@@ -23,7 +23,11 @@ const onSignUp = function(event){
   .then(api.signIn)
   .then(ui.signInSuccess)
   .then((data) => {
-    questionApi.createUserQuestions(data);
+    //change i to number of questions you have plus 1
+    for (let i = 1; i < 4; i++) {
+      let question_id = i;
+      questionApi.createUserQuestions(data, question_id);
+    }
   })
   .catch((err) => {
     console.log(err);
