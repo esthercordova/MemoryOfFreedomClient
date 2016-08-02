@@ -71,9 +71,9 @@ const onShowStatictics = (event) => {
 
 
 const addHandlers = () => {
-  $(document).on('click','#right', onShowStatictics);
-  $(document).on('click','#wrong', onShowStatictics);
-  $(document).on( "click", '#start',onPopulatingQuestions);
+  $(document).on('click','#start', onShowStatictics);
+  $(document).on( 'click', '#start',onPopulatingQuestions);
+
 };
 
 module.exports = {
