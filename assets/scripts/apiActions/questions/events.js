@@ -69,9 +69,11 @@ const onShowStatictics = (event) => {
 //   .fail(ui.failure);
 // };
 
+
 const addHandlers = () => {
   $(document).on('click','#right', onShowStatictics);
   $(document).on('click','#wrong', onShowStatictics);
+  $(document).on( "click", '#start',onPopulatingQuestions);
 };
 
 module.exports = {

@@ -20,14 +20,6 @@ const failure = (error) => {
 const signInSuccess = (data) => {
   app.user = data.user;
   $(".start").html(showStartTemplate(data));
-
-
-  $(document.body).on('click', '#start', function () {
-    questionsEvents.onPopulatingQuestions();
-    $(".start").html(showQuestionTemplate(data));
-  });
-
-
 };
 
 const signOutSuccess = function (){
