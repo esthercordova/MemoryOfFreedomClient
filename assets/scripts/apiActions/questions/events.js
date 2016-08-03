@@ -12,26 +12,19 @@ const onPopulatingQuestions = () => {
   .fail(ui.failure);
 };
 
-// const onShowAndSaveStatus = (events) => {
-//   event.preventDefault();
-//   let user_id = app.user.id;
-//   let notes = "";
-//   let question_id = 1;
-//   console.log("hura");
-//   console.log("hurasss" + data);
-//   api.showQuestions()
-//   .done(ui.success)
-//   .then(() => {
-//     api.createQuestionInJointTable(status, user_id, question_id, notes)
-//     .done(ui.success)
-//     .fail(ui.failure);
-//     })
-//   .fail(ui.failure);
-//   };
-
-  // api.changeQuestionStatus(status, user_id, question_id, notes)
-  // .done(ui.success)
-  // .fail(ui.failure);
+const onSaveStatus = (event) => {
+  event.preventDefault();
+  // let token = app.user.token;
+  let user_id = app.user.id;
+  let notes = "note";
+  let question_id = 1;
+  let status = "easy";
+  // :user_id, :question_id, :status, :notes
+  console.log( status + " userid " + user_id + "question_id "+ question_id);
+  api.changeQuestionStatus(user_id, question_id, status,  notes)
+  .done(ui.success)
+  .fail(ui.failure);
+  };
 
 const onShowStatictics = (event) => {
   event.preventDefault();
@@ -40,37 +33,16 @@ const onShowStatictics = (event) => {
   .fail(ui.failure);
 };
 
-// const onCreateStatusForQuestion = (question_id) => {
-//   let user_id = app.user.id;
-//   let status = "";
-//   let notes = "";
-//   console.log(status, user_id, question_id, notes);
-//   api.createStatusForQuestion(status, user_id, question_id, notes)
-//   .done(ui.success)
-//   .fail(ui.failure);
-// };
-
-// $(document.body).on('click','#showAnswer',function(question){
-//   $('#questions').html(showQuestionTemplate(question));
-//   console.log('Im in the showTheAnswer');
-//   console.log('that is the question', question);
-// });
-
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
   $(document).on( 'click', '#start',onPopulatingQuestions);
+  $(document).on('click', '#right', onSaveStatus);
 };
 
 module.exports = {
   addHandlers,
   onPopulatingQuestions,
-  // onPopulatingBuckets,
-  // onPopulatingQuestions,
-  // onChangeQuestionStatus,
   onShowStatictics,
-  // onSaveStatusEasy,
-  // onSaveStatusHard,
-  // onCreateStatusForQuestion,
-  // onShowAndSaveStatus,
-  // onCheckIfFirstRound,
+  onSaveStatus,
+
 };

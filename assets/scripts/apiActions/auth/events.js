@@ -4,7 +4,7 @@ const getFormFields = require('../../../../lib/get-form-fields');
 
 const api  = require('./api');
 const ui = require('./ui');
-const app = require('../../app');
+// const app = require('../../app');
 const questionApi = require('../questions/api');
 
 const onSignUp = function(event){
@@ -19,12 +19,13 @@ const onSignUp = function(event){
     // console.log("inside 1st then data is ", credentials);
     ui.success(signUpData);
     return credentials;
+
   })
   .then(api.signIn)
   .then(ui.signInSuccess)
   .then((data) => {
     //change i to number of questions you have plus 1
-    for (let i = 1; i < 40; i++) {
+    for (let i = 1; i < 10; i++) {
       let question_id = i;
       questionApi.createUserQuestions(data, question_id);
     }
@@ -33,6 +34,8 @@ const onSignUp = function(event){
     console.log(err);
   });
 };
+
+
 
 const onSignIn = function(event){
   event.preventDefault();
