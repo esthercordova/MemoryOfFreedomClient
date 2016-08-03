@@ -47,11 +47,12 @@ const changeQuestionStatus = (user_id, question_id, status,  notes) => {
     Authorization: 'Token token=' + app.user.token,
   },
   data:
-    { "status": status,
-      "user_id": user_id,
-      "question_id": question_id,
-      "notes":notes,
-    }
+  {"user_question":{ "status":status,
+                      "user_id":user_id,
+                      "question_id":question_id,
+                      "notes":notes,
+                    }
+  }
 });
 };
 

@@ -79,7 +79,6 @@ const gettingStatistics = function (data) {
        let questionsEvents = require('./events.js');
        let question_id = questions[i-1].id;
        // questionsEvents.onChangeQuestionStatus(question_id, status);
-
        } else {
        let status = "hard";
        let questionsEvents = require('./events.js');
@@ -87,7 +86,6 @@ const gettingStatistics = function (data) {
        // questionsEvents.onChangeQuestionStatus(question_id, status);
      }
     });
-    console.log("data questions ", data)
   };
 
 module.exports = {

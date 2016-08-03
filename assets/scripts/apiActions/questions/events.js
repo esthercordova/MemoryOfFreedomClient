@@ -16,12 +16,13 @@ const onPopulatingQuestions = () => {
 
 const onSaveStatus = (event) => {
   event.preventDefault();
-  // let token = app.user.token;
   let user_id = app.user.id;
   let notes = "note";
-  let question_id = 1;
   let status = "easy";
-  // :user_id, :question_id, :status, :notes
+  let dataIdNextQuestion = $(".giveQuestionId").data("id");
+  let question_id = dataIdNextQuestion -1;
+  console.log("question_id ", question_id);
+
   console.log( status + " userid " + user_id + "question_id "+ question_id);
   api.changeQuestionStatus(user_id, question_id, status,  notes)
   .done(ui.success)
@@ -38,7 +39,6 @@ const onShowStatictics = (event) => {
 const onChooseWhatToStudy = () => {
   console.log("button clicked");
   $(".start").html(showChooseWhatToStudyTemplate());
-  
 };
 
 const addHandlers = () => {
