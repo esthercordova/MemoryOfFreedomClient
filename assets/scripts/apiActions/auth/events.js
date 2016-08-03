@@ -24,7 +24,7 @@ const onSignUp = function(event){
   .then(ui.signInSuccess)
   .then((data) => {
     //change i to number of questions you have plus 1
-    for (let i = 1; i < 4; i++) {
+    for (let i = 1; i < 40; i++) {
       let question_id = i;
       questionApi.createUserQuestions(data, question_id);
     }
