@@ -35,14 +35,12 @@ const onSignUp = function(event){
   });
 };
 
-
-
 const onSignIn = function(event){
   event.preventDefault();
   let data = getFormFields(event.target);
   api.signIn(data)
   .done(ui.signInSuccess)
-  .fail(ui.failure);
+  .fail(ui.signInFailure);
 };
 
 const onSignOut = function(event){
@@ -56,8 +54,8 @@ const onChangePassword = function(event){
   event.preventDefault();
   let data = getFormFields(event.target);
   api.changePassword(data)
-  .done(ui.success)
-  .fail(ui.failure);
+  .done(ui.changePasswordSuccess)
+  .fail(ui.passwordFailure);
 };
 
 const addHandlers = () => {

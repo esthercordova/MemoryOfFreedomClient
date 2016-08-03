@@ -18,10 +18,10 @@
     </div>
     <div class="nav" id="navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#myModal" data-toggle="modal" data-target="#signIn"><span class="glyphicon glyphicon-user"></span> Sign-In</a></li>
-        <li><a href="#myModal" data-toggle="modal" data-target="#signUp"><span class="glyphicon glyphicon-education"></span> Sign-Up </a></li>
-        <li><a href="#myModal" data-toggle="modal" data-target="#signOut"><span class="glyphicon glyphicon-log-in"></span> Sign-Out</a></li>
-        <li><a href="#myModal" data-toggle="modal" data-target="#changePassword"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+        <li><a href="#myModal" id='navSignIn' data-toggle="modal" data-target="#signIn"><span class="glyphicon glyphicon-user"></span> Sign-In</a></li>
+        <li><a href="#myModal" id='navSignUp' data-toggle="modal" data-target="#signUp"><span class="glyphicon glyphicon-education"></span> Sign-Up </a></li>
+        <li><a href="#myModal" id='navSignOut' data-toggle="modal" data-target="#signOut"><span class="glyphicon glyphicon-log-in"></span> Sign-Out</a></li>
+        <li><a href="#myModal" id='navSettings' data-toggle="modal" data-target="#changePassword"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
       </ul>
     </div>
   </div>
@@ -68,6 +68,7 @@
               <input type="password" name="credentials[password]" placeholder="password">
               <input type="password" name="credentials[password_confirmation]" placeholder="Confirm password">
               <input type="submit" name="submit" value="Sign up!">
+              <div id='signInMessage'></div>
             </fieldset>
         </form>
       </div>
