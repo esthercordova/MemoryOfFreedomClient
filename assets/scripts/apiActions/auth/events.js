@@ -19,7 +19,6 @@ const onSignUp = function(event){
     // console.log("inside 1st then data is ", credentials);
     ui.success(signUpData);
     return credentials;
-
   })
   .then(api.signIn)
   .then(ui.signInSuccess)
@@ -28,6 +27,7 @@ const onSignUp = function(event){
     for (let i = 1; i < 10; i++) {
       let question_id = i;
       questionApi.createUserQuestions(data, question_id);
+      // .then(ui.createUserQuestionsSuccess);
     }
   })
   .catch((err) => {

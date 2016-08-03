@@ -30,9 +30,6 @@ const failure = (error) => {
 
 const gettingStatistics = function (data) {
   let user_questions = data.user_questions;
-  // console.log("user questions is this : ", user_questions);
-  // console.log("this is status from first question", user_questions[0].status);
-  // console.log("this is user id from question 4 " + user_questions[4]["user"].id);
   let easyCount = 0 ;
   let hardCount = 0 ;
   $.each(user_questions, function(key, value) {
@@ -41,8 +38,6 @@ const gettingStatistics = function (data) {
     } else if (value.status === "hard"){
       return hardCount += 1;
     }
-    // console.log("current user id " , app.user.id);
-    // console.log("status is ", value.status);
   });
   let statData = {
     easy: easyCount,
@@ -55,7 +50,6 @@ const gettingStatistics = function (data) {
    let questions = data.questions;
    let i = 0;
    let question = questions[i];
-
    // hide start page
    $("#question").html(showQuestionTemplate(question));
    $("#answer").hide();
