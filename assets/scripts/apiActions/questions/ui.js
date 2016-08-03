@@ -29,6 +29,7 @@ const failure = (error) => {
 };
 
 const gettingStatistics = function (data) {
+  console.log("in getShow statistic");
   let user_questions = data.user_questions;
   let easyCount = 0 ;
   let hardCount = 0 ;
@@ -82,10 +83,16 @@ const gettingStatistics = function (data) {
     });
   };
 
+const createUserQuestionsSuccess = () => {
+  console.log("in here");
+
+};
+
 module.exports = {
   success,
   failure,
   gettingStatistics,
   populatingQuestions,
   changeQuestionStatusSuccess,
+  createUserQuestionsSuccess
 };

@@ -14,31 +14,31 @@ const onPopulatingQuestions = () => {
   .fail(ui.failure);
 };
 
-const onSaveStatusEasy = (event) => {
-  event.preventDefault();
-  let user_id = app.user.id;
-  let notes = "note";
-  let status = "easy";
-  let dataIdNextQuestion = $(".giveQuestionId").data("id");
-  let question_id = dataIdNextQuestion -1;
-  //console.log( status + " userid " + user_id + "question_id "+ question_id);
-  api.changeQuestionStatus(user_id, question_id, status,  notes)
-  .done(ui.success)
-  .fail(ui.failure);
-  };
+// const onSaveStatusEasy = (event) => {
+//   event.preventDefault();
+//   let user_id = app.user.id;
+//   let notes = "note";
+//   let status = "easy";
+//   let dataIdNextQuestion = $(".giveQuestionId").data("id");
+//   let question_id = dataIdNextQuestion -1;
+//   //console.log( status + " userid " + user_id + "question_id "+ question_id);
+//   api.changeQuestionStatus(user_id, question_id, status,  notes)
+//   .done(ui.success)
+//   .fail(ui.failure);
+//   };
 
-  const onSaveStatusHard = (event) => {
-    event.preventDefault();
-    let user_id = app.user.id;
-    let notes = "note";
-    let status = "hard";
-    let dataIdNextQuestion = $(".giveQuestionId").data("id");
-    let question_id = dataIdNextQuestion -1;
-    // console.log( status + " userid " + user_id + "question_id "+ question_id);
-    api.changeQuestionStatus(user_id, question_id, status,  notes)
-    .done(ui.success)
-    .fail(ui.failure);
-    };
+  // const onSaveStatusHard = (event) => {
+  //   event.preventDefault();
+  //   let user_id = app.user.id;
+  //   let notes = "note";
+  //   let status = "hard";
+  //   let dataIdNextQuestion = $(".giveQuestionId").data("id");
+  //   let question_id = dataIdNextQuestion -1;
+  //   // console.log( status + " userid " + user_id + "question_id "+ question_id);
+  //   api.changeQuestionStatus(user_id, question_id, status,  notes)
+  //   .done(ui.success)
+  //   .fail(ui.failure);
+  //   };
 
 const onShowStatictics = (event) => {
   event.preventDefault();
@@ -54,7 +54,9 @@ const onChooseWhatToStudy = () => {
 const onShowJointTableId = (event) => {
   event.preventDefault();
   let user_id = app.user.id;
-  let question_id = 2;
+  let question_id = 1;
+  console.log(user_id + "user id");
+  console.log(question_id + "question_id");
   api.getJointTableId(question_id, user_id)
   // rename it to .then maybe need a promise
   .done(ui.success)
@@ -74,18 +76,19 @@ const addHandlers = () => {
   // $(document).on('click','#wrong', onShowStatictics);
 
   $(document).on( 'click', '#start',onPopulatingQuestions);
-  $(document).on('click', '#right', onSaveStatusEasy);
-  $(document).on('click', '#wrong', onSaveStatusHard);
+  // $(document).on('click', '#right', onSaveStatusEasy);
+  // $(document).on('click', '#wrong', onSaveStatusHard);
   $(document).on('click', '#stop', onChooseWhatToStudy);
 
   //test get the joint id
-  $(document).on('click', '#test', onShowJointTableId);
+  $(document).on('click', '#right', onShowJointTableId);
+  $(document).on('click', '#wrong', onShowJointTableId);
 };
 
 module.exports = {
   addHandlers,
   onPopulatingQuestions,
   onShowStatictics,
-  onSaveStatusEasy,
-  onSaveStatusHard,
+  // onSaveStatusEasy,
+  // onSaveStatusHard,
 };

@@ -43,32 +43,40 @@ const getJointTableId = (question_id, user_id) => {
   });
 };
 
-const changeQuestionStatus = (user_id, question_id, status,  notes) => {
-  return $.ajax({
-  method: 'PATCH',
-  url: app.host + '/user_questions/' + question_id,
-  headers: {
-    Authorization: 'Token token=' + app.user.token,
-  },
-  data:
-  {"user_question":{ "status":status,
-                      "user_id":user_id,
-                      "question_id":question_id,
-                      "notes":notes,
-                    }
-  }
-});
-};
-
-const createUserQuestions = () => {
+// const changeQuestionStatus = (user_id, question_id, status,  notes) => {
+//   return $.ajax({
+//   method: 'PATCH',
+//   url: app.host + '/user_questions/' + question_id,
+//   headers: {
+//     Authorization: 'Token token=' + app.user.token,
+//   },
+//   data:
+//   {"user_question":{ "status":status,
+//                       "user_id":user_id,
+//                       "question_id":question_id,
+//                       "notes":notes,
+//                     }
+//   }
+// });
+// };
+const createUserQuestions = (data, question_id) => {
   return $.ajax({
     url: app.host + '/user_questions',
-    method: "GET",
+    method: "POST",
     headers: {
       Authorization: 'Token token=' + app.user.token,
+    },
+    data:
+    {"user_question":
+                      { "status": "hard",
+                        "user_id": data.user.id,
+                        "question_id":question_id,
+                        "notes": "notes",
+                      }
     }
   });
 };
+
 // const saveStatus = (status, user_id, question_id, notes) => {
 //   return $.ajax({
 //   method: 'POST',
@@ -88,7 +96,7 @@ const createUserQuestions = () => {
 
 module.exports = {
   showQuestions,
-  changeQuestionStatus,
+  // changeQuestionStatus,
   getStatusStatistics,
   createUserQuestions,
   getJointTableId,
