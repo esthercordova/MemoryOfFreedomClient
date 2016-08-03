@@ -6,6 +6,7 @@ const ui = require('./ui');
 const app = require('../../app');
 
 const onPopulatingQuestions = () => {
+  $('#startQuestions').hide();
   api.showQuestions()
   .done(ui.populatingQuestions)
   .fail(ui.failure);
@@ -39,26 +40,6 @@ const onShowStatictics = (event) => {
   .fail(ui.failure);
 };
 
-const onSaveStatusEasy = () => {
-  let user_id = app.user.id;
-  let status = "easy";
-  console.log("here");
-  console.log("status"+ status);
-  api.saveStatus(status, user_id)
-  .done(ui.success)
-  .fail(ui.failure);
-};
-
-const onSaveStatusHard = () => {
-  let user_id = app.user.id;
-  let status = "hard";
-  console.log("here");
-  console.log("status"+ status);
-  api.saveStatus(status, user_id)
-  .done(ui.success)
-  .fail(ui.failure);
-};
-
 // const onCreateStatusForQuestion = (question_id) => {
 //   let user_id = app.user.id;
 //   let status = "";
@@ -69,26 +50,27 @@ const onSaveStatusHard = () => {
 //   .fail(ui.failure);
 // };
 
+// $(document.body).on('click','#showAnswer',function(question){
+//   $('#questions').html(showQuestionTemplate(question));
+//   console.log('Im in the showTheAnswer');
+//   console.log('that is the question', question);
+// });
+
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
   $(document).on( 'click', '#start',onPopulatingQuestions);
-  // $(document).on( 'click', '#right',onSaveStatusEasy);
-  // $(document).on( 'click', '#wrong',onSaveStatusHard);
-  // $(document).on( 'click', '#right',onCreateStatusForQuestion);
 };
 
 module.exports = {
   addHandlers,
-  // onPopulatingBuckets,
   onPopulatingQuestions,
+  // onPopulatingBuckets,
+  // onPopulatingQuestions,
   // onChangeQuestionStatus,
   onShowStatictics,
-  onSaveStatusEasy,
-  onSaveStatusHard,
+  // onSaveStatusEasy,
+  // onSaveStatusHard,
   // onCreateStatusForQuestion,
   // onShowAndSaveStatus,
   // onCheckIfFirstRound,
-  // onChangeQuestionStatusToEasy,
-  // onChangeQuestionStatusToMedium,
-  // onChangeQuestionStatusToHard,
 };

@@ -3,7 +3,7 @@ const app = require('../../app.js');
 
 const questionsEvents = require('../questions/events.js');
 const showStartTemplate = require('../../../templates/start.handlebars');
-const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
+// const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
 
 const success = (data) => {
   console.log("data in success is ", data);

@@ -5,7 +5,6 @@ const api = require('./api.js');
 const questionsEvents = require('./events.js');
 
 const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
-const showBucketsTemplate = require('../../../templates/showbuckets.handlebars');
 const showStatisticTemplate = require('../../../templates/statistic.handlebars');
 
 const success = (data) => {
@@ -50,36 +49,45 @@ const gettingStatistics = function (data) {
   };
   $("#statistic").html(showStatisticTemplate(statData));
 };
- const populatingQuestions = function (data) {
-  let questions = data.questions;
-  let i = 0;
-  let question = questions[i];
-  $("#question").html(showQuestionTemplate(question));
 
-  //when button clicked than show next question
-  $(document.body).on('click', '.answerButton', function () {
-    let clickedButton = this.id;
-    i++;
-    $("#question").html(showQuestionTemplate(questions[i]));
-    if (clickedButton === "right") {
-      let status = "easy";
-      // because of variable scope has be be required here again
-      let questionsEvents = require('./events.js');
-      let question_id = questions[i-1].id;
-      // questionsEvents.onChangeQuestionStatus(question_id, status);
-      } else {
-      let status = "hard";
-      let questionsEvents = require('./events.js');
-      let question_id = questions[i-1].id;
-      // questionsEvents.onChangeQuestionStatus(question_id, status);
-    }
-   });
-   console.log("data", data)
- };
-  //  let question = questions[0]
-  //  console.log("this is the whole question ", questions[0]);
-  //  console.log("this is the title ", questions[0].title);
-  //  console.log("this is the answers array ", questions[0].answer);
+ const populatingQuestions = function (data) {
+   let questions = data.questions;
+   let i = 0;
+   let question = questions[i];
+
+   // hide start page
+   $("#question").html(showQuestionTemplate(question));
+   $("#answer").hide();
+
+   $(document.body).on('click', '.showAnswerButton', function () {
+      $("#answer").show();
+      $('.showAnswerButton').hide();
+    });
+    // start to cycle through the questions
+    $(document.body).on('click', '.answerButton', function () {
+     let clickedButton = this.id;
+     i++;
+
+     $("#question").html(showQuestionTemplate(questions[i]));
+     $("#answer").hide();
+
+     if (clickedButton === "right") {
+
+       let status = "easy";
+       // because of variable scope has be be required here again
+       let questionsEvents = require('./events.js');
+       let question_id = questions[i-1].id;
+       // questionsEvents.onChangeQuestionStatus(question_id, status);
+
+       } else {
+       let status = "hard";
+       let questionsEvents = require('./events.js');
+       let question_id = questions[i-1].id;
+       // questionsEvents.onChangeQuestionStatus(question_id, status);
+     }
+    });
+    console.log("data questions ", data)
+  };
 
 module.exports = {
   success,
