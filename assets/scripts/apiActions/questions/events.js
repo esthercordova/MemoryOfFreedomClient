@@ -5,6 +5,8 @@ const api = require('./api');
 const ui = require('./ui');
 const app = require('../../app');
 
+const showChooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
+
 const onPopulatingQuestions = () => {
   $('#startQuestions').hide();
   api.showQuestions()
@@ -33,10 +35,17 @@ const onShowStatictics = (event) => {
   .fail(ui.failure);
 };
 
+const onChooseWhatToStudy = () => {
+  console.log("button clicked");
+  $(".start").html(showChooseWhatToStudyTemplate());
+  
+};
+
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
   $(document).on( 'click', '#start',onPopulatingQuestions);
   $(document).on('click', '#right', onSaveStatus);
+  $(document).on('click', '#stop', onChooseWhatToStudy);
 };
 
 module.exports = {
