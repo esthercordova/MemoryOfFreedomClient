@@ -84,8 +84,6 @@ const gettingStatistics = function (data) {
   };
 
 const createUserQuestionsSuccess = () => {
-  console.log("in here");
-
 };
 
 module.exports = {

@@ -1,6 +1,6 @@
 'use strict';
 
-const getFormFields = require('../../../../lib/get-form-fields');
+// const getFormFields = require('../../../../lib/get-form-fields');
 const api = require('./api');
 const ui = require('./ui');
 const app = require('../../app');
@@ -25,24 +25,45 @@ const onChooseWhatToStudy = () => {
   $(".start").html(showChooseWhatToStudyTemplate());
 };
 
-const onChangeStatus = (event) => {
 //first get joint table id then PATCH
+//Only difference between onChangeStatusEasy and onChangeStatusHard is the
+//harcoded status variable - when time refactor
+const onChangeStatusEasy = (event) => {
   return new Promise(function(resolve,reject) {
   event.preventDefault();
   let user_id = app.user.id;
   let question_id = $('.giveQuestionId').attr('data-id') - 1;
-  let status = "testa";
+  let status = "easy";
   let notes = "please work";
-
   api.getJointTableId(question_id, user_id)
-
   .done(function(data){
     let user_question_table_id = data.user_questions[0].id;
     console.log(data);
     console.log("user_question ID " + data.user_questions[0].id);
     console.log("question_id " + question_id + "user_id " + user_id);
     console.log("token" + app.user.token);
+    api.changeQuestionStatus( user_id,question_id,status, notes,user_question_table_id)
+  })
+  .fail(function(data){
+    reject(error);
+  });
+});
+};
 
+const onChangeStatusHard = (event) => {
+  return new Promise(function(resolve,reject) {
+  event.preventDefault();
+  let user_id = app.user.id;
+  let question_id = $('.giveQuestionId').attr('data-id') - 1;
+  let status = "hard";
+  let notes = "please work";
+  api.getJointTableId(question_id, user_id)
+  .done(function(data){
+    let user_question_table_id = data.user_questions[0].id;
+    console.log(data);
+    console.log("user_question ID " + data.user_questions[0].id);
+    console.log("question_id " + question_id + "user_id " + user_id);
+    console.log("token" + app.user.token);
     api.changeQuestionStatus( user_id,question_id,status, notes,user_question_table_id)
   })
   .fail(function(data){
@@ -57,12 +78,11 @@ const addHandlers = () => {
   // $(document).on('click','#wrong', onShowStatictics);
 
   $(document).on( 'click', '#start',onPopulatingQuestions);
-
   $(document).on('click', '#stop', onChooseWhatToStudy);
 
 
-  $(document).on('click', '#right', onChangeStatus);
-  $(document).on('click', '#wrong', onChangeStatus);
+  $(document).on('click', '#right', onChangeStatusEasy);
+  $(document).on('click', '#wrong', onChangeStatusHard);
 };
 
 module.exports = {
