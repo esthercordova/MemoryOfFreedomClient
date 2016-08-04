@@ -56,7 +56,8 @@ const onShowJointTableId = (event) => {
   return new Promise(function(resolve,reject) {
   event.preventDefault();
   let user_id = app.user.id;
-  let question_id = 1;
+  // let question_id = 1;
+  let question_id = $('.giveQuestionId').attr('data-id') - 1;
   let status = "testa";
   let notes = "please work";
 
