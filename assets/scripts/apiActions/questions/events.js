@@ -77,11 +77,25 @@ const onChangeStatusHard = (event) => {
 });
 };
 
-const onSaveNote = () => {
+const onSaveNote = (event) => {
+  return new Promise(function(resolve,reject) {
+  event.preventDefault();
+
   console.log("this works");
-  let note = $("#note").val();
-  console.log(note);
+  let question_id = 1;
+  let user_id = app.user.id;
+  let notes = $("#note").val();
+  api.getJointTableId(question_id, user_id)
+  .done(function(data){
+    let user_question_table_id = data.user_questions[0].id;
+    api.saveNote( user_id,question_id, notes,user_question_table_id)
+  })
+  .fail(function(data){
+    reject(error);
+  });
+});
 };
+
 
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
@@ -100,4 +114,5 @@ module.exports = {
   addHandlers,
   onPopulatingQuestions,
   onShowStatictics,
+  onSaveNote,
 };
