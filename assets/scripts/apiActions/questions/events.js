@@ -80,7 +80,7 @@ const onChangeStatusHard = (event) => {
 const onSaveNote = (event) => {
   return new Promise(function(resolve,reject) {
   event.preventDefault();
-  let question_id = 1;
+  let question_id = $('.giveQuestionId').attr('data-id') - 1;
   let user_id = app.user.id;
   let notes = $("#note").val();
   api.getJointTableId(question_id, user_id)
@@ -97,7 +97,7 @@ const onSaveNote = (event) => {
 const onDeleteNote = (event) => {
   return new Promise(function(resolve,reject) {
   event.preventDefault();
-  let question_id = 1;
+  let question_id = $('.giveQuestionId').attr('data-id') - 1;
   let user_id = app.user.id;
   let notes = "";
   api.getJointTableId(question_id, user_id)
@@ -111,6 +111,34 @@ const onDeleteNote = (event) => {
 });
 };
 
+const onDeleteQuestion = (event) => {
+  return new Promise(function(resolve,reject) {
+  event.preventDefault();
+
+
+  let question_id = $('.giveQuestionId').attr('data-id');
+  let user_id = app.user.id;
+  console.log("question_id"+question_id);
+  console.log("user_id" +user_id);
+  api.getJointTableId(question_id, user_id)
+  .done(function(data){
+    let user_question_table_id = data.user_questions[0].id;
+    console.log("user_question_table_id" +user_question_table_id);
+    api.deleteQuestion(user_question_table_id)
+  })
+  .fail(function(data){
+    reject(error);
+  });
+});
+};
+
+const onAddNickname = (event) => {
+  event.preventDefault();
+  let nickname = "my nickname";
+  api.addNickname(nickname)
+  .done(ui.success)
+  .fail(ui.failure);
+};
 
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
@@ -124,6 +152,12 @@ const addHandlers = () => {
   $(document).on('click', '#wrong', onChangeStatusHard);
   $(document).on('click','#saveNote', onSaveNote);
   $(document).on('click','#deleteNote', onDeleteNote);
+
+  $(document).on('click','#deleteQuestion', onDeleteQuestion);
+
+  $(document).on('click','#nicknameSubmit', onAddNickname);
+
+
 };
 
 module.exports = {
@@ -132,4 +166,6 @@ module.exports = {
   onShowStatictics,
   onSaveNote,
   onDeleteNote,
+  onDeleteQuestion,
+  onAddNickname,
 };

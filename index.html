@@ -106,7 +106,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"> Change your password</h4>
+        <h4 class="modal-title" id="myModalLabel"> Change your password Or add nickname</h4>
       </div>
 
       <div class="modal-body">
@@ -114,7 +114,11 @@
           <fieldset>
             <input type="password" name="passwords[old]" placeholder="Current Password">
             <input type="password" name="passwords[new]" placeholder="New Password">
+
             <input type="submit" name="submit" value="Change Password">
+
+            <input id="nickname" type="text"  placeholder="nickname">
+            <input id="nicknameSubmit" type="submit" name="submit" value="Add nickname">
             <div id='changePasswordMessage'></div>
           </fieldset>
         </form>

@@ -105,6 +105,30 @@ const deleteNote = (user_id, question_id, notes, user_question_table_id) => {
 });
 };
 
+const deleteQuestion = (user_question_table_id) => {
+  return $.ajax(
+    {
+      url: app.host + '/user_questions/' +  user_question_table_id,
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Token token=' + app.user.token,
+      },
+    });
+};
+
+const addNickname = (nickname) => {
+  return $.ajax({
+    url: app.host + '/profiles',
+    method: "POST",
+    headers: {
+      Authorization: 'Token token=' + app.user.token,
+    },
+    data:
+    {"profile":
+      { "nickname": nickname }
+    }
+  });
+};
 
 module.exports = {
   showQuestions,
@@ -114,4 +138,6 @@ module.exports = {
   getJointTableId,
   saveNote,
   deleteNote,
+  deleteQuestion,
+  addNickname,
 };
