@@ -28,6 +28,8 @@ const onChooseWhatToStudy = () => {
 //first get joint table id then PATCH
 //Only difference between onChangeStatusEasy and onChangeStatusHard is the
 //harcoded status variable - when time refactor
+
+// need to add in the end ui.gettingStatistics to update statistics on front end
 const onChangeStatusEasy = (event) => {
   return new Promise(function(resolve,reject) {
   event.preventDefault();
@@ -36,7 +38,7 @@ const onChangeStatusEasy = (event) => {
   let status = "easy";
   let notes = "";
   api.getJointTableId(question_id, user_id)
-  .done(function(data){
+  .then(function(data){
     let user_question_table_id = data.user_questions[0].id;
     console.log(data);
     console.log("user_question ID " + data.user_questions[0].id);
@@ -44,6 +46,9 @@ const onChangeStatusEasy = (event) => {
     console.log("token" + app.user.token);
     api.changeQuestionStatus( user_id,question_id,status, notes,user_question_table_id)
   })
+  // .then(function(data){
+  //   ui.gettingStatistics(data)
+  // })
   .fail(function(data){
     reject(error);
   });
@@ -74,8 +79,8 @@ const onChangeStatusHard = (event) => {
 
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
-  // $(document).on('click','#right', onShowStatictics);
-  // $(document).on('click','#wrong', onShowStatictics);
+  $(document).on('click','#right', onShowStatictics);
+  $(document).on('click','#wrong', onShowStatictics);
 
   $(document).on( 'click', '#start',onPopulatingQuestions);
   $(document).on('click', '#stop', onChooseWhatToStudy);
