@@ -51,8 +51,8 @@ const onChooseWhatToStudy = () => {
   $(".start").html(showChooseWhatToStudyTemplate());
 };
 
-const onShowJointTableId = (event) => {
-
+const onChangeStatus = (event) => {
+//first get joint table id then PATCH
   return new Promise(function(resolve,reject) {
   event.preventDefault();
   let user_id = app.user.id;
@@ -89,8 +89,8 @@ const addHandlers = () => {
   $(document).on('click', '#stop', onChooseWhatToStudy);
 
   //test get the joint id
-  $(document).on('click', '#right', onShowJointTableId);
-  $(document).on('click', '#wrong', onShowJointTableId);
+  $(document).on('click', '#right', onChangeStatus);
+  $(document).on('click', '#wrong', onChangeStatus);
 };
 
 module.exports = {
