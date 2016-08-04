@@ -80,11 +80,26 @@ const onChangeStatusHard = (event) => {
 const onSaveNote = (event) => {
   return new Promise(function(resolve,reject) {
   event.preventDefault();
-
-  console.log("this works");
   let question_id = 1;
   let user_id = app.user.id;
   let notes = $("#note").val();
+  api.getJointTableId(question_id, user_id)
+  .done(function(data){
+    let user_question_table_id = data.user_questions[0].id;
+    api.saveNote( user_id,question_id, notes,user_question_table_id)
+  })
+  .fail(function(data){
+    reject(error);
+  });
+});
+};
+
+const onDeleteNote = (event) => {
+  return new Promise(function(resolve,reject) {
+  event.preventDefault();
+  let question_id = 1;
+  let user_id = app.user.id;
+  let notes = "";
   api.getJointTableId(question_id, user_id)
   .done(function(data){
     let user_question_table_id = data.user_questions[0].id;
@@ -108,6 +123,7 @@ const addHandlers = () => {
   $(document).on('click', '#right', onChangeStatusEasy);
   $(document).on('click', '#wrong', onChangeStatusHard);
   $(document).on('click','#saveNote', onSaveNote);
+  $(document).on('click','#deleteNote', onDeleteNote);
 };
 
 module.exports = {
@@ -115,4 +131,5 @@ module.exports = {
   onPopulatingQuestions,
   onShowStatictics,
   onSaveNote,
+  onDeleteNote,
 };

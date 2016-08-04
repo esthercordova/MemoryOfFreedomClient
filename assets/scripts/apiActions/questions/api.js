@@ -88,6 +88,24 @@ const saveNote = (user_id, question_id, notes, user_question_table_id) => {
 });
 };
 
+const deleteNote = (user_id, question_id, notes, user_question_table_id) => {
+  return $.ajax({
+  method: 'PATCH',
+  url: app.host + '/user_questions/' +  user_question_table_id,
+  headers: {
+    Authorization: 'Token token=' + app.user.token,
+  },
+  data:
+  {"user_question":{
+                      "user_id":user_id,
+                      "question_id":question_id,
+                      "notes":notes,
+                    }
+  }
+});
+};
+
+
 module.exports = {
   showQuestions,
   changeQuestionStatus,
@@ -95,4 +113,5 @@ module.exports = {
   createUserQuestions,
   getJointTableId,
   saveNote,
+  deleteNote,
 };
