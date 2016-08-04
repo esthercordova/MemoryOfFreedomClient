@@ -22,13 +22,6 @@ const showQuestions = () => {
   });
 };
 
-// 1. ajax to /user_questions/find/'wit a get with user_id and the question_id
-//this will return the id in the row we are looking for
-//than we PATCH
-//console log
-
-// very first just hardcode to see if root is working
-
 const getJointTableId = (question_id, user_id) => {
   return $.ajax({
     url: app.host + '/user_question/find/',
@@ -72,28 +65,11 @@ const createUserQuestions = (data, question_id) => {
                       { "status": "hard",
                         "user_id": data.user.id,
                         "question_id":question_id,
-                        "notes": "notes",
+                        "notes": "",
                       }
     }
   });
 };
-
-// const saveStatus = (status, user_id, question_id, notes) => {
-//   return $.ajax({
-//   method: 'POST',
-//   url: app.host + '/user_questions',
-//   headers: {
-//     Authorization: 'Token token=' + app.user.token,
-//   },
-//   data:
-//     {"user_question":{ "status":status,
-//                         "user_id":user_id,
-//                         "question_id":question_id,
-//                         "notes":notes,
-//                       }
-//     }
-// });
-// };
 
 module.exports = {
   showQuestions,
@@ -101,6 +77,4 @@ module.exports = {
   getStatusStatistics,
   createUserQuestions,
   getJointTableId,
-  // saveStatus,
-
 };

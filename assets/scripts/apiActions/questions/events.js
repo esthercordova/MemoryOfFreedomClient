@@ -34,7 +34,7 @@ const onChangeStatusEasy = (event) => {
   let user_id = app.user.id;
   let question_id = $('.giveQuestionId').attr('data-id') - 1;
   let status = "easy";
-  let notes = "please work";
+  let notes = "";
   api.getJointTableId(question_id, user_id)
   .done(function(data){
     let user_question_table_id = data.user_questions[0].id;
@@ -56,7 +56,7 @@ const onChangeStatusHard = (event) => {
   let user_id = app.user.id;
   let question_id = $('.giveQuestionId').attr('data-id') - 1;
   let status = "hard";
-  let notes = "please work";
+  let notes = "";
   api.getJointTableId(question_id, user_id)
   .done(function(data){
     let user_question_table_id = data.user_questions[0].id;
