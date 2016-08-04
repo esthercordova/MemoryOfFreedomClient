@@ -77,17 +77,21 @@ const onChangeStatusHard = (event) => {
 });
 };
 
+const onSaveNote = () => {
+  console.log("this works");
+};
+
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
   $(document).on('click','#right', onShowStatictics);
   $(document).on('click','#wrong', onShowStatictics);
 
-  $(document).on( 'click', '#start',onPopulatingQuestions);
+  $(document).on('click', '#start',onPopulatingQuestions);
   $(document).on('click', '#stop', onChooseWhatToStudy);
-
 
   $(document).on('click', '#right', onChangeStatusEasy);
   $(document).on('click', '#wrong', onChangeStatusHard);
+  $(document).on('click','#saveNote', onSaveNote);
 };
 
 module.exports = {
