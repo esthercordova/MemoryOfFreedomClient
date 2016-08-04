@@ -79,6 +79,8 @@ const onChangeStatusHard = (event) => {
 
 const onSaveNote = () => {
   console.log("this works");
+  let note = $("#note").val();
+  console.log(note);
 };
 
 const addHandlers = () => {
