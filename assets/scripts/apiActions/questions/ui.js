@@ -7,6 +7,22 @@ const questionsEvents = require('./events.js');
 const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
 const showStatisticTemplate = require('../../../templates/statistic.handlebars');
 
+const addNicknameSuccess = () => {
+  $('#nickname').val(' ');
+  api.getProfileId()
+  .then((res) => {
+    app.user.profile = res.user.profile;
+    $('#nicknameDelete').removeClass('hide');
+    $('#nicknameSubmit').addClass('hide');
+    $('#nickname').addClass('borderless');
+    $('#nickname').val(app.user.profile.nickname);
+  });
+  // .then((res) => {
+  //   app.user.profile = res.user.profile;
+  // });
+  // console.log(data.user.);
+  console.log("app in add Nickname Success ", app);
+};
 
 const success = (data) => {
   if (data) {
@@ -27,6 +43,7 @@ const changeQuestionStatusSuccess = (data) => {
 const failure = (error) => {
   console.error(error);
 };
+
 
 const gettingStatistics = function (data) {
   console.log("in getShow statistic");
@@ -86,11 +103,27 @@ const gettingStatistics = function (data) {
 const createUserQuestionsSuccess = () => {
 };
 
+const deleteNicknameSuccess = () => {
+  app.profiles = null;
+  $('#nicknameDelete').addClass('hide');
+  $('#nicknameSubmit').removeClass('hide');
+  $('#nickname').removeClass('borderless');
+  $('#nickname').val(' ');
+};
+
+const getProfileIdSuccess = (data) => {
+  app.profile = data.profile;
+  console.log ('app on profile Success ', app);
+};
+
 module.exports = {
   success,
   failure,
   gettingStatistics,
   populatingQuestions,
   changeQuestionStatusSuccess,
-  createUserQuestionsSuccess
+  createUserQuestionsSuccess,
+  addNicknameSuccess,
+  deleteNicknameSuccess,
+  getProfileIdSuccess,
 };

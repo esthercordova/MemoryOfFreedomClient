@@ -39,6 +39,13 @@ const changePasswordSuccess = () => {
 
 const signInSuccess = (data) => {
   app.user = data.user;
+  if (app.user.profile) {
+    $('#nicknameDelete').removeClass('hide');
+    $('#nicknameSubmit').addClass('hide');
+    $('#nickname').addClass('borderless');
+    $('#nickname').val(app.user.profile.nickname);
+  }
+  console.log("app.user", app.user);
   $(".start").html(showStartTemplate(data));
   $('#signInMessage').html('You successfully logged in!');
   $('#signUpMessage').html('');
@@ -58,6 +65,10 @@ const signInFailure = () => {
 
 const signOutSuccess = () => {
   app.user = null;
+  $('#nicknameDelete').addClass('hide');
+  $('#nicknameSubmit').removeClass('hide');
+  $('#nickname').removeClass('borderless');
+  $('#nickname').val(' ');
   $('#signInMessage').html('');
   $('#signOutMessage').html("It's sad to see you leave... Come back soon.");
   $('#signUpMessage').html('');
@@ -69,6 +80,8 @@ const signOutSuccess = () => {
   $('#navSignOut').hide();
   console.log(app);
 };
+
+
 
 module.exports = {
   failure,

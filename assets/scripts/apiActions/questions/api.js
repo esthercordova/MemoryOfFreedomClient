@@ -130,6 +130,45 @@ const addNickname = (nickname) => {
   });
 };
 
+const deleteNickname = () => {
+  return new Promise((resolve, reject) => {
+  console.log("app profile " + app.user.profile);
+   $.ajax(
+    {
+      url: app.host + '/profiles/' + app.user.profile.id,
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Token token=' + app.user.token,
+      },
+      success: (response) => {
+        resolve(response);
+      },
+      error: (error) => {
+        reject(error);
+      }
+    });
+  });
+};
+
+const getProfileId = () => {
+  return new Promise((resolve, reject) => {
+   $.ajax({
+    url: app.host + '/users/' + app.user.id,
+    method: "GET",
+    headers: {
+      Authorization: 'Token token=' + app.user.token,
+    },
+    success: (response) => {
+      resolve(response);
+    },
+    error: (error) => {
+      reject(error);
+    }
+  });
+  // console.log("profielId API call:", data);
+});
+};
+
 module.exports = {
   showQuestions,
   changeQuestionStatus,
@@ -140,4 +179,6 @@ module.exports = {
   deleteNote,
   deleteQuestion,
   addNickname,
+  deleteNickname,
+  getProfileId,
 };

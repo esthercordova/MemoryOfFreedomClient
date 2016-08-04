@@ -123,7 +123,7 @@ const onDeleteQuestion = (event) => {
   api.getJointTableId(question_id, user_id)
   .done(function(data){
     let user_question_table_id = data.user_questions[0].id;
-    console.log("user_question_table_id" +user_question_table_id);
+    console.log("user_question_table_id" + user_question_table_id);
     api.deleteQuestion(user_question_table_id)
   })
   .fail(function(data){
@@ -137,9 +137,35 @@ const onAddNickname = (event) => {
   let nickname = $('#nickname').val();
   console.log(nickname);
   api.addNickname(nickname)
-  .done(ui.success)
+  // .then(api.getProfileId)
+  .done(ui.addNicknameSuccess)
   .fail(ui.failure);
 };
+
+const onDeleteNickname = (event) => {
+//   return new Promise(function(resolve,reject) {
+  event.preventDefault();
+//
+console.log("app profile ", app);
+  api.deleteNickname()
+  // .then(ui.getProfileSuccess)
+  // .then(api.deleteNickname)
+  .then(ui.deleteNicknameSuccess)
+  .catch(error => console.error(error));
+};
+//   .done(function(data){
+//     console.log("profile data " , data);
+//     let profileId = data.profile.id;
+//     return profileId;
+//     console.log("id" , profileId);
+//     api.deleteNickname(profileId)
+//     .then(ui.deleteNicknameSuccess)
+//   })
+//   .fail(function(data){
+//     reject(error);
+//   });
+// });
+// };
 
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
@@ -157,8 +183,7 @@ const addHandlers = () => {
   $(document).on('click','#deleteQuestion', onDeleteQuestion);
 
   $(document).on('click','#nicknameSubmit', onAddNickname);
-
-
+  $(document).on('click','#nicknameDelete', onDeleteNickname);
 };
 
 module.exports = {
@@ -169,4 +194,5 @@ module.exports = {
   onDeleteNote,
   onDeleteQuestion,
   onAddNickname,
+  onDeleteNickname,
 };
