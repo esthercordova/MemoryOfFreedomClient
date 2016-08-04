@@ -14,32 +14,6 @@ const onPopulatingQuestions = () => {
   .fail(ui.failure);
 };
 
-// const onSaveStatusEasy = (event) => {
-//   event.preventDefault();
-//   let user_id = app.user.id;
-//   let notes = "note";
-//   let status = "easy";
-//   let dataIdNextQuestion = $(".giveQuestionId").data("id");
-//   let question_id = dataIdNextQuestion -1;
-//   //console.log( status + " userid " + user_id + "question_id "+ question_id);
-//   api.changeQuestionStatus(user_id, question_id, status,  notes)
-//   .done(ui.success)
-//   .fail(ui.failure);
-//   };
-
-  // const onSaveStatusHard = (event) => {
-  //   event.preventDefault();
-  //   let user_id = app.user.id;
-  //   let notes = "note";
-  //   let status = "hard";
-  //   let dataIdNextQuestion = $(".giveQuestionId").data("id");
-  //   let question_id = dataIdNextQuestion -1;
-  //   // console.log( status + " userid " + user_id + "question_id "+ question_id);
-  //   api.changeQuestionStatus(user_id, question_id, status,  notes)
-  //   .done(ui.success)
-  //   .fail(ui.failure);
-  //   };
-
 const onShowStatictics = (event) => {
   event.preventDefault();
   api.getStatusStatistics()
@@ -56,7 +30,6 @@ const onChangeStatus = (event) => {
   return new Promise(function(resolve,reject) {
   event.preventDefault();
   let user_id = app.user.id;
-  // let question_id = 1;
   let question_id = $('.giveQuestionId').attr('data-id') - 1;
   let status = "testa";
   let notes = "please work";
@@ -75,7 +48,7 @@ const onChangeStatus = (event) => {
   .fail(function(data){
     reject(error);
   });
-  })
+});
 };
 
 const addHandlers = () => {
@@ -84,11 +57,10 @@ const addHandlers = () => {
   // $(document).on('click','#wrong', onShowStatictics);
 
   $(document).on( 'click', '#start',onPopulatingQuestions);
-  // $(document).on('click', '#right', onSaveStatusEasy);
-  // $(document).on('click', '#wrong', onSaveStatusHard);
+
   $(document).on('click', '#stop', onChooseWhatToStudy);
 
-  //test get the joint id
+
   $(document).on('click', '#right', onChangeStatus);
   $(document).on('click', '#wrong', onChangeStatus);
 };
@@ -97,6 +69,4 @@ module.exports = {
   addHandlers,
   onPopulatingQuestions,
   onShowStatictics,
-  // onSaveStatusEasy,
-  // onSaveStatusHard,
 };
