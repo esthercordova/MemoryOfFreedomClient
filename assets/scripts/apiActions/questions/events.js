@@ -134,7 +134,8 @@ const onDeleteQuestion = (event) => {
 
 const onAddNickname = (event) => {
   event.preventDefault();
-  let nickname = "my nickname";
+  let nickname = $('#nickname').val();
+  console.log(nickname);
   api.addNickname(nickname)
   .done(ui.success)
   .fail(ui.failure);
