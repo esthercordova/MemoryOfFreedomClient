@@ -55,11 +55,15 @@ const onShowJointTableId = (event) => {
   event.preventDefault();
   let user_id = app.user.id;
   let question_id = 1;
-  console.log(user_id + "user id");
-  console.log(question_id + "question_id");
+  let status = "testa";
+
   api.getJointTableId(question_id, user_id)
   // rename it to .then maybe need a promise
-  .done(ui.success)
+  // .then((data) => {
+  //   api.changeQuestionStatus(user_id,question_id, status);
+  // }
+// })
+
   // .then(dataIDObject) => {
   // api.PatchStatus(dataIDObject)
 
@@ -67,6 +71,7 @@ const onShowJointTableId = (event) => {
   // in ajax
 //}
   //
+  .done(ui.success)
   .fail(ui.failure);
 };
 

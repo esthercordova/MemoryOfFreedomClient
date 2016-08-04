@@ -43,22 +43,23 @@ const getJointTableId = (question_id, user_id) => {
   });
 };
 
-// const changeQuestionStatus = (user_id, question_id, status,  notes) => {
-//   return $.ajax({
-//   method: 'PATCH',
-//   url: app.host + '/user_questions/' + question_id,
-//   headers: {
-//     Authorization: 'Token token=' + app.user.token,
-//   },
-//   data:
-//   {"user_question":{ "status":status,
-//                       "user_id":user_id,
-//                       "question_id":question_id,
-//                       "notes":notes,
-//                     }
-//   }
-// });
-// };
+const changeQuestionStatus = (user_id, question_id, status,  notes) => {
+  return $.ajax({
+  method: 'PATCH',
+  url: app.host + '/user_questions/' +  data.user_questions[0].id,
+  headers: {
+    Authorization: 'Token token=' + app.user.token,
+  },
+  data:
+  {"user_question":{ "status":status,
+                      "user_id":user_id,
+                      "question_id":question_id,
+                      "notes":notes,
+                    }
+  }
+});
+};
+
 const createUserQuestions = (data, question_id) => {
   return $.ajax({
     url: app.host + '/user_questions',
@@ -96,7 +97,7 @@ const createUserQuestions = (data, question_id) => {
 
 module.exports = {
   showQuestions,
-  // changeQuestionStatus,
+  changeQuestionStatus,
   getStatusStatistics,
   createUserQuestions,
   getJointTableId,
