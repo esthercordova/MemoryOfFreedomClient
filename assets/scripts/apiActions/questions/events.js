@@ -74,6 +74,11 @@ const onChangeStatusHard = (event) => {
     console.log("token" + app.user.token);
     api.changeQuestionStatus( user_id,question_id,status, notes,user_question_table_id)
   })
+  .then(function(){
+    api.getStatusStatistics()
+    .done(ui.gettingStatistics)
+    .fail(ui.failure);
+  })
   .fail(function(data){
     reject(error);
   });

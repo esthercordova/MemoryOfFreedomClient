@@ -62,7 +62,7 @@ const createUserQuestions = (data, question_id) => {
     },
     data:
     {"user_question":
-                      { "status": "hard",
+                      { "status": "",
                         "user_id": data.user.id,
                         "question_id":question_id,
                         "notes": "",

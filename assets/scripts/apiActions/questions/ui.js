@@ -6,6 +6,7 @@ const questionsEvents = require('./events.js');
 
 const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
 const showStatisticTemplate = require('../../../templates/statistic.handlebars');
+const chooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
 
 const addNicknameSuccess = () => {
   $('#nickname').val(' ');
@@ -50,18 +51,26 @@ const gettingStatistics = function (data) {
   let user_questions = data.user_questions;
   let easyCount = 0 ;
   let hardCount = 0 ;
+  let totalCount = 0;
   $.each(user_questions, function(key, value) {
     if(value.status === "easy") {
+      totalCount+=1;
       return easyCount += 1;
     } else if (value.status === "hard"){
+      totalCount+=1;
       return hardCount += 1;
     }
   });
+  console.log("total count " + totalCount);
   let statData = {
     easy: easyCount,
     hard: hardCount,
   };
   $("#statistic").html(showStatisticTemplate(statData));
+
+  if (totalCount>=8) {
+      $('.start').html(chooseWhatToStudyTemplate());
+  }
 };
 
  const populatingQuestions = function (data) {
