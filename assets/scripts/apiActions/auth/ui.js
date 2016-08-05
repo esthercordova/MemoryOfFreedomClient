@@ -78,7 +78,7 @@ const signOutSuccess = () => {
   $('#navSignUp').show();
   $('#navSettings').hide();
   $('#navSignOut').hide();
-  console.log(app);
+  $('#statistic').html('');
 };
 
 
