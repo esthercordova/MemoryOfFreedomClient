@@ -54,6 +54,10 @@ webpackJsonp([0],[
 	var questionApi = __webpack_require__(9);
 	var questionUi = __webpack_require__(10);
 
+	var signInSuccessCallback = function signInSuccessCallback() {
+	  questionUi.countQuestionsOfEachType(true);
+	};
+
 	var onSignUp = function onSignUp(event) {
 	  event.preventDefault();
 	  var credentials = getFormFields(event.target);
@@ -70,19 +74,15 @@ webpackJsonp([0],[
 	      var question_id = i;
 	      // console.log("data " , data);
 	      // console.log("user id" + data.user.id);
-	      questionApi.createUserQuestions(data, question_id)
-	      // questionApi.createUserQuestions(data, question_id)
-	      .then(questionUi.createUserQuestionsSuccess);
+	      questionApi.createUserQuestions(data, question_id).then(questionUi.createUserQuestionsSuccess);
 	    }
-	  }).catch(function (err) {
-	    console.log(err);
-	  });
+	  }).then(signInSuccessCallback);
 	};
 
 	var onSignIn = function onSignIn(event) {
 	  event.preventDefault();
 	  var data = getFormFields(event.target);
-	  api.signIn(data).done(ui.signInSuccess).fail(ui.signInFailure);
+	  api.signIn(data).then(ui.signInSuccess).then(signInSuccessCallback).fail(ui.signInFailure);
 	};
 
 	var onSignOut = function onSignOut(event) {
@@ -233,7 +233,7 @@ webpackJsonp([0],[
 	'use strict';
 
 	var app = {
-	  // host: 'http://tic-tac-toe.wdibos.com',
+	  // host: 'https://memoryoffreedom.herokuapp.com/',
 	  host: 'http://localhost:3000'
 	};
 
@@ -323,7 +323,7 @@ webpackJsonp([0],[
 	  $('#navSignUp').show();
 	  $('#navSettings').hide();
 	  $('#navSignOut').hide();
-	  console.log(app);
+	  $('#statistic').html('');
 	};
 
 	module.exports = {
@@ -352,23 +352,89 @@ webpackJsonp([0],[
 
 	var showChooseWhatToStudyTemplate = __webpack_require__(32);
 
-	var onPopulatingQuestions = function onPopulatingQuestions() {
-	  $('#startQuestions').hide();
-	  api.showQuestions().done(ui.populatingQuestions).fail(ui.failure);
-	};
-
-	var onShowStatictics = function onShowStatictics(event) {
-	  event.preventDefault();
-	  api.getStatusStatistics().done(ui.gettingStatistics).fail(ui.failure);
-	};
-
+	// const onPopulatingQuestions = () => {
+	//   $('#startQuestions').hide();
+	//   api.showQuestions()
+	//   .done(ui.populatingQuestions)
+	//   .fail(ui.failure);
+	// };
+	//
+	// const onShowStatictics = (event) => {
+	//   event.preventDefault();
+	//   api.getStatusStatistics()
+	//   .done(ui.gettingStatistics)
+	//   .fail(ui.failure);
+	// };
+	//
 	var onChooseWhatToStudy = function onChooseWhatToStudy() {
-	  $(".start").html(showChooseWhatToStudyTemplate());
+	  ui.countQuestionsOfEachType(true);
 	};
 
 	//first get joint table id then PATCH
 	//Only difference between onChangeStatusEasy and onChangeStatusHard is the
 	//harcoded status variable - when time refactor
+
+	var onClickNewBucketButton = function onClickNewBucketButton(event) {
+	  event.preventDefault();
+	  // get all of the new user_questions
+	  api.getUserQuestions().then(function (user_questions_object) {
+	    var user_questions = user_questions_object['user_questions'];
+	    console.log(user_questions);
+	    var questionsArray = [];
+	    for (var i in user_questions) {
+	      console.log(user_questions[i].status + "-----");
+	      if (user_questions[i].status === "") {
+	        questionsArray.push(user_questions[i]);
+	      }
+	    }
+	    console.log('in events button clicked');
+	    console.log(questionsArray);
+	    ui.loopThroughQuestions(questionsArray);
+	  });
+	};
+
+	var onClickEasyBucketButton = function onClickEasyBucketButton(event) {
+	  event.preventDefault();
+	  // get all of the new user_questions
+	  api.getUserQuestions().then(function (user_questions_object) {
+	    console.log('in easy bucket');
+	    console.log(user_questions_object);
+	    var user_questions = user_questions_object['user_questions'];
+	    console.log('user questions:');
+	    console.log(user_questions);
+	    var questionsArray = [];
+	    for (var i in user_questions) {
+	      if (user_questions[i].status === "easy") {
+	        questionsArray.push(user_questions[i]);
+	      }
+	    }
+	    console.log('in events button clicked');
+	    console.log(questionsArray);
+	    ui.loopThroughQuestions(questionsArray);
+	  });
+	};
+
+	var onClickHardBucketButton = function onClickHardBucketButton(event) {
+	  event.preventDefault();
+	  // get all of the new user_questions
+	  api.getUserQuestions().then(function (user_questions_object) {
+	    console.log('in hard bucket');
+	    console.log(user_questions_object);
+	    var user_questions = user_questions_object['user_questions'];
+	    // console.log(user_questions);
+	    var questionsArray = [];
+	    for (var i in user_questions) {
+	      if (user_questions[i].status === "hard") {
+	        questionsArray.push(user_questions[i]);
+	      }
+	    }
+	    console.log('in events button clicked');
+	    console.log(questionsArray);
+	    ui.loopThroughQuestions(questionsArray);
+	  });
+	};
+
+	var onChangeQuestionStatus = function onChangeQuestionStatus() {};
 
 	// need to add in the end ui.gettingStatistics to update statistics on front end
 	var onChangeStatusEasy = function onChangeStatusEasy(event) {
@@ -383,13 +449,12 @@ webpackJsonp([0],[
 	      console.log(data);
 	      console.log("user_question ID " + data.user_questions[0].id);
 	      console.log("question_id " + question_id + "user_id " + user_id);
-	      console.log("token" + app.user.token);
-	      api.changeQuestionStatus(user_id, question_id, status, notes, user_question_table_id);
-	    })
-	    // .then(function(data){
-	    //   ui.gettingStatistics(data)
-	    // })
-	    .fail(function (data) {
+	      console.log("token" + app.user.token).then(function () {
+	        api.changeQuestionStatus(user_id, question_id, status, notes, user_question_table_id);
+	      });
+	    }).then(function (event) {
+	      api.getStatusStatistics().done(ui.gettingStatistics).fail(ui.failure);
+	    }).fail(function (error) {
 	      reject(error);
 	    });
 	  });
@@ -484,30 +549,21 @@ webpackJsonp([0],[
 	    return console.error(error);
 	  });
 	};
-	//   .done(function(data){
-	//     console.log("profile data " , data);
-	//     let profileId = data.profile.id;
-	//     return profileId;
-	//     console.log("id" , profileId);
-	//     api.deleteNickname(profileId)
-	//     .then(ui.deleteNicknameSuccess)
-	//   })
-	//   .fail(function(data){
-	//     reject(error);
-	//   });
-	// });
-	// };
 
 	var addHandlers = function addHandlers() {
-	  $(document).on('click', '#start', onShowStatictics);
-	  $(document).on('click', '#right', onShowStatictics);
-	  $(document).on('click', '#wrong', onShowStatictics);
+	  // $(document).on('click','#start', onShowStatictics);
+	  // $(document).on('click','#right', onShowStatictics);
+	  // $(document).on('click','#wrong', onShowStatictics);
 
-	  $(document).on('click', '#start', onPopulatingQuestions);
+	  // $(document).on('click', '#start',onPopulatingQuestions);
 	  $(document).on('click', '#stop', onChooseWhatToStudy);
 
-	  $(document).on('click', '#right', onChangeStatusEasy);
-	  $(document).on('click', '#wrong', onChangeStatusHard);
+	  $(document).on('click', '#newBucket', onClickNewBucketButton);
+	  $(document).on('click', '#easyBucket', onClickEasyBucketButton);
+	  $(document).on('click', '#hardBucket', onClickHardBucketButton);
+
+	  // $(document).on('click', '#right', onChangeStatusEasy);
+	  // $(document).on('click', '#wrong', onChangeStatusHard);
 	  $(document).on('click', '#saveNote', onSaveNote);
 	  $(document).on('click', '#deleteNote', onDeleteNote);
 
@@ -519,8 +575,8 @@ webpackJsonp([0],[
 
 	module.exports = {
 	  addHandlers: addHandlers,
-	  onPopulatingQuestions: onPopulatingQuestions,
-	  onShowStatictics: onShowStatictics,
+	  // onPopulatingQuestions,
+	  // onShowStatictics,
 	  onSaveNote: onSaveNote,
 	  onDeleteNote: onDeleteNote,
 	  onDeleteQuestion: onDeleteQuestion,
@@ -538,6 +594,16 @@ webpackJsonp([0],[
 	var app = __webpack_require__(6);
 
 	var getStatusStatistics = function getStatusStatistics() {
+	  return $.ajax({
+	    url: app.host + '/user_questions',
+	    method: "GET",
+	    headers: {
+	      Authorization: 'Token token=' + app.user.token
+	    }
+	  });
+	};
+
+	var getUserQuestions = function getUserQuestions() {
 	  return $.ajax({
 	    url: app.host + '/user_questions',
 	    method: "GET",
@@ -594,7 +660,7 @@ webpackJsonp([0],[
 	    headers: {
 	      Authorization: 'Token token=' + app.user.token
 	    },
-	    data: { "user_question": { "status": "hard",
+	    data: { "user_question": { "status": "",
 	        "user_id": data.user.id,
 	        "question_id": question_id,
 	        "notes": ""
@@ -691,11 +757,24 @@ webpackJsonp([0],[
 	        reject(_error2);
 	      }
 	    });
-	    // console.log("profielId API call:", data);
 	  });
 	};
 
+	var populateEasyBucket = function populateEasyBucket() {
+	  return $.ajax({
+	    url: app.host + '/user_questions/easy',
+	    method: "GET",
+	    headers: {
+	      Authorization: 'Token token=' + app.user.token
+	    }
+	  });
+	};
+
+	// const populateHardBucket = () => {
+	//
+	// };
 	module.exports = {
+	  getUserQuestions: getUserQuestions,
 	  showQuestions: showQuestions,
 	  changeQuestionStatus: changeQuestionStatus,
 	  getStatusStatistics: getStatusStatistics,
@@ -706,7 +785,8 @@ webpackJsonp([0],[
 	  deleteQuestion: deleteQuestion,
 	  addNickname: addNickname,
 	  deleteNickname: deleteNickname,
-	  getProfileId: getProfileId
+	  getProfileId: getProfileId,
+	  populateEasyBucket: populateEasyBucket
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -722,6 +802,129 @@ webpackJsonp([0],[
 
 	var showQuestionTemplate = __webpack_require__(11);
 	var showStatisticTemplate = __webpack_require__(31);
+	var chooseWhatToStudyTemplate = __webpack_require__(32);
+
+	var questionsLength = void 0;
+	var ii = void 0;
+	var clickedButton = void 0;
+	var questions = void 0;
+	var firstTime = true;
+
+	var showButtons = function showButtons(countObject) {
+	  console.log('inside fun');
+	  console.log(countObject);
+	  $('.start').show();
+	  $('.start').html(chooseWhatToStudyTemplate(countObject));
+	};
+
+	var showCount = function showCount(countObject) {
+	  $("#statistic").html(showStatisticTemplate(countObject));
+	};
+
+	var countQuestionsOfEachType = function countQuestionsOfEachType(shouldShowButtons) {
+	  api.getUserQuestions().then(function (user_questions_object) {
+	    var user_questions = user_questions_object['user_questions'];
+
+	    var nEasy = 0;
+	    var nHard = 0;
+	    var nNew = 0;
+
+	    for (var i in user_questions) {
+
+	      if (user_questions[i].status === "easy") {
+	        nEasy += 1;
+	      } else if (user_questions[i].status === "hard") {
+	        nHard += 1;
+	      } else if (user_questions[i].status === "") {
+	        nNew += 1;
+	      } else {
+	        console.log("Error: status must be 'easy', 'hard', or ''");
+	      }
+	    }
+	    var countObject = { 'nEasy': nEasy, 'nHard': nHard, 'nNew': nNew };
+	    console.log('inside count questions');
+	    console.log(countObject);
+	    showCount(countObject);
+	    if (shouldShowButtons) {
+	      showButtons(countObject);
+	    }
+	  });
+	};
+
+	var onChangeQuestionStatus = function onChangeQuestionStatus(question, status) {
+	  var user_question_id = question.id;
+	  var question_id = question['question'].id;
+	  var user_id = app.user.id;
+	  var notes = "";
+
+	  console.log('inside on change');
+	  console.log(question);
+	  console.log("user_question ID " + user_question_id);
+	  console.log("question_id " + question_id + "user_id " + user_id);
+	  console.log("token" + app.user.token);
+	  api.changeQuestionStatus(user_id, question_id, status, notes, user_question_id).then(function () {
+	    countQuestionsOfEachType(false);
+	  }).then(function () {
+	    if (ii >= questionsLength) {
+	      console.log('length too much');
+	      countQuestionsOfEachType(true);
+	    }
+	  }).fail(function (error) {
+	    reject(error);
+	  });
+	};
+
+	var loopThroughQuestions = function loopThroughQuestions(questionsNew) {
+	  questions = questionsNew;
+	  console.log("new questions");
+	  console.log(questions);
+	  questionsLength = questions.length;
+	  ii = 0;
+	  console.log('first i = ' + ii);
+	  console.log('questions length = ' + questionsLength);
+
+	  // hide start page
+	  $("#question").html(showQuestionTemplate(questions[ii]['question']));
+	  $("#answer").hide();
+	  if (firstTime) {
+
+	    firstTime = false;
+
+	    $("body").on('click', '.showAnswerButton', function () {
+	      $("#answer").show();
+	      $('.showAnswerButton').hide();
+	    });
+	    // start to cycle through the questions
+	    $("body").on('click', '.answerButton', function () {
+	      clickedButton = this.id;
+
+	      console.log("click button " + clickedButton);
+	      console.log("i = " + ii);
+
+	      console.log(questions[ii]);
+
+	      if (clickedButton === "right") {
+
+	        var status = "easy";
+	        // because of variable scope has be be required here again
+	        // let questionsEvents = require('./events.js');
+	        // let question_id = questions[i].id;
+	        onChangeQuestionStatus(questions[ii], status);
+	      } else {
+	        var _status = "hard";
+	        // let questionsEvents = require('./events.js');
+	        // let question_id = questions[i].id;
+	        onChangeQuestionStatus(questions[ii], _status);
+	      }
+	      ii++;
+
+	      if (ii < questionsLength) {
+	        $("#question").html(showQuestionTemplate(questions[ii]['question']));
+	        $("#answer").hide();
+	      }
+	    });
+	  }
+	};
 
 	var addNicknameSuccess = function addNicknameSuccess() {
 	  $('#nickname').val(' ');
@@ -759,61 +962,6 @@ webpackJsonp([0],[
 	  console.error(error);
 	};
 
-	var gettingStatistics = function gettingStatistics(data) {
-	  console.log("in getShow statistic");
-	  var user_questions = data.user_questions;
-	  var easyCount = 0;
-	  var hardCount = 0;
-	  $.each(user_questions, function (key, value) {
-	    if (value.status === "easy") {
-	      return easyCount += 1;
-	    } else if (value.status === "hard") {
-	      return hardCount += 1;
-	    }
-	  });
-	  var statData = {
-	    easy: easyCount,
-	    hard: hardCount
-	  };
-	  $("#statistic").html(showStatisticTemplate(statData));
-	};
-
-	var populatingQuestions = function populatingQuestions(data) {
-	  var questions = data.questions;
-	  var i = 0;
-	  var question = questions[i];
-	  // hide start page
-	  $("#question").html(showQuestionTemplate(question));
-	  $("#answer").hide();
-
-	  $(document.body).on('click', '.showAnswerButton', function () {
-	    $("#answer").show();
-	    $('.showAnswerButton').hide();
-	  });
-	  // start to cycle through the questions
-	  $(document.body).on('click', '.answerButton', function () {
-	    var clickedButton = this.id;
-	    i++;
-
-	    $("#question").html(showQuestionTemplate(questions[i]));
-	    $("#answer").hide();
-
-	    if (clickedButton === "right") {
-
-	      var status = "easy";
-	      // because of variable scope has be be required here again
-	      var _questionsEvents = __webpack_require__(8);
-	      var question_id = questions[i - 1].id;
-	      // questionsEvents.onChangeQuestionStatus(question_id, status);
-	    } else {
-	      var _status = "hard";
-	      var _questionsEvents2 = __webpack_require__(8);
-	      var _question_id = questions[i - 1].id;
-	      // questionsEvents.onChangeQuestionStatus(question_id, status);
-	    }
-	  });
-	};
-
 	var createUserQuestionsSuccess = function createUserQuestionsSuccess() {};
 
 	var deleteNicknameSuccess = function deleteNicknameSuccess() {
@@ -832,13 +980,15 @@ webpackJsonp([0],[
 	module.exports = {
 	  success: success,
 	  failure: failure,
-	  gettingStatistics: gettingStatistics,
-	  populatingQuestions: populatingQuestions,
 	  changeQuestionStatusSuccess: changeQuestionStatusSuccess,
 	  createUserQuestionsSuccess: createUserQuestionsSuccess,
 	  addNicknameSuccess: addNicknameSuccess,
 	  deleteNicknameSuccess: deleteNicknameSuccess,
-	  getProfileIdSuccess: getProfileIdSuccess
+	  getProfileIdSuccess: getProfileIdSuccess,
+	  showButtons: showButtons,
+	  showCount: showCount,
+	  loopThroughQuestions: loopThroughQuestions,
+	  countQuestionsOfEachType: countQuestionsOfEachType
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -861,7 +1011,7 @@ webpackJsonp([0],[
 	    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
 	    + "</h4>\n<div id=\"showAnswerButton\">\n<button id=\"showAnswer\" class=\"btn btn-info showAnswerButton\">Show me the answer!</button>\n</div>\n\n<div id=\"answer\">\n"
 	    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.answer : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-	    + "\n  <button id=\"right\" class=\"btn btn-info answerButton\">Got it right!</button>\n  <button id=\"wrong\" class=\"btn btn-info answerButton\">Got it wrong</button>\n  <button id=\"stop\" class=\"btn btn-info\">Stop studying</button>\n  <button id=\"deleteQuestion\" type=\"submit\" class=\"btn btn-secondary\"><span class=\"glyphicon glyphicon-trash\"></span> Delete </button>\n\n\n<div class=\"form-group\">\n    <label for=\"comment\">Add notes to this question:</label>\n    <textarea class=\"form-control\" rows=\"5\" id='note'></textarea>\n\n    <button id=\"saveNote\" type=\"submit\" class=\"btn btn-secondary\">\n      <span class=\"glyphicon glyphicon-floppy-disk\"></span>\n    </button>\n\n    <button id=\"deleteNote\" type=\"submit\" class=\"btn btn-secondary\">\n      <span class=\"glyphicon glyphicon-trash\"></span>\n    </button>\n</div>\n\n</div>\n";
+	    + "\n  <button id=\"right\" class=\"btn btn-info answerButton\">Got it right!</button>\n  <button id=\"wrong\" class=\"btn btn-info answerButton\">Got it wrong</button>\n  <button id=\"stop\" class=\"btn btn-info\">Stop studying</button>\n\n\n<!-- <div class=\"form-group\">\n    <label for=\"comment\">Add notes to this question:</label>\n    <textarea class=\"form-control\" rows=\"5\" id='note'></textarea>\n\n    <button id=\"saveNote\" type=\"submit\" class=\"btn btn-secondary\">\n      <span class=\"glyphicon glyphicon-floppy-disk\"></span>\n    </button>\n\n    <button id=\"deleteNote\" type=\"submit\" class=\"btn btn-secondary\">\n      <span class=\"glyphicon glyphicon-trash\"></span>\n    </button>\n</div> -->\n\n</div>\n";
 	},"useData":true});
 
 /***/ },
@@ -2048,12 +2198,14 @@ webpackJsonp([0],[
 	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
 	    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-	  return "<h5> Your Knowlege Bucktes </h5>\n\n<table style=\"width:100%\">\n  <tr>\n    <th>Easy/right</th>\n    <!-- <th>Medium</th> -->\n    <th>Hard/wrong</th>\n  </tr>\n  <tr>\n    <td>"
-	    + alias4(((helper = (helper = helpers.easy || (depth0 != null ? depth0.easy : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"easy","hash":{},"data":data}) : helper)))
+	  return "<h5> Your Knowlege Bucktes </h5>\n\n<table style=\"width:100%\">\n  <tr>\n    <th>New</th>\n    <th>Easy/right</th>\n    <!-- <th>Medium</th> -->\n    <th>Hard/wrong</th>\n  </tr>\n  <tr>\n    <td>"
+	    + alias4(((helper = (helper = helpers.nNew || (depth0 != null ? depth0.nNew : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nNew","hash":{},"data":data}) : helper)))
+	    + "</td>\n    <td>"
+	    + alias4(((helper = (helper = helpers.nEasy || (depth0 != null ? depth0.nEasy : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nEasy","hash":{},"data":data}) : helper)))
 	    + "</td>\n    <!-- <td>"
 	    + alias4(((helper = (helper = helpers.medium || (depth0 != null ? depth0.medium : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"medium","hash":{},"data":data}) : helper)))
 	    + "</td> -->\n    <td>"
-	    + alias4(((helper = (helper = helpers.hard || (depth0 != null ? depth0.hard : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"hard","hash":{},"data":data}) : helper)))
+	    + alias4(((helper = (helper = helpers.nHard || (depth0 != null ? depth0.nHard : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nHard","hash":{},"data":data}) : helper)))
 	    + "</td>\n  </tr>\n</table>\n";
 	},"useData":true});
 
@@ -2063,8 +2215,19 @@ webpackJsonp([0],[
 
 	var Handlebars = __webpack_require__(12);
 	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
-	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-	    return "<h1>Memory of Freedom</h1>\n\n<h3> Which questions do you want to study? </h1>\n\n<button id=\"easyBucket\" class=\"btn btn-secondary\">Easy/Right</button>\n<button id=\"hardBucket\" class=\"btn btn-secondary\">Hard/Wrong</button>\n";
+	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+	    return "  <button id=\"newBucket\" class=\"btn btn-secondary\">New</button>\n";
+	},"3":function(container,depth0,helpers,partials,data) {
+	    return "  <button id=\"easyBucket\" class=\"btn btn-secondary\">Easy/Right</button>\n";
+	},"5":function(container,depth0,helpers,partials,data) {
+	    return "  <button id=\"hardBucket\" class=\"btn btn-secondary\">Hard/Wrong</button>\n";
+	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var stack1, alias1=depth0 != null ? depth0 : {};
+
+	  return "<h1>Memory of Freedom</h1>\n\n<h3> Which questions do you want to study? </h1>\n\n"
+	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nNew : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nEasy : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nHard : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 	},"useData":true});
 
 /***/ },
