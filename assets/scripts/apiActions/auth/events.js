@@ -9,7 +9,7 @@ const questionApi = require('../questions/api');
 const questionUi = require('../questions/ui');
 
 const signInSuccessCallback = function(){
-      questionUi.countQuestionsOfEachType(true, true);
+      questionUi.countQuestionsOfEachType(true);
 };
 
 const onSignUp = function(event){
@@ -43,7 +43,8 @@ const onSignIn = function(event){
   event.preventDefault();
   let data = getFormFields(event.target);
   api.signIn(data)
-  .done(signInSuccessCallback)
+  .then(ui.signInSuccess)
+  .then(signInSuccessCallback)
   .fail(ui.signInFailure);
 };
 
