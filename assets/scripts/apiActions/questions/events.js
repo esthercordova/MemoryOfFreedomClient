@@ -35,15 +35,60 @@ const onClickNewBucketButton = (event) => {
   api.getUserQuestions()
   .then(function (user_questions_object) {
     let user_questions = user_questions_object['user_questions'];
+    console.log(user_questions);
+    let questionsArray = [];
+    for (let i in user_questions) {
+      console.log(user_questions[i].status + "-----");
+      if (user_questions[i].status === "") {
+        questionsArray.push(user_questions[i]);
+      }
+    }
+    console.log('in events button clicked');
+    console.log(questionsArray);
+    ui.loopThroughQuestions(questionsArray, true);
+  });
+}
+
+const onClickEasyBucketButton = (event) => {
+  event.preventDefault();
+  // get all of the new user_questions
+  api.getUserQuestions()
+  .then(function (user_questions_object) {
+    console.log('in easy bucket');
+    console.log(user_questions_object);
+    let user_questions = user_questions_object['user_questions'];
+    console.log('user questions:');
+    console.log(user_questions);
+    let questionsArray = [];
+    for (let i in user_questions) {
+      if (user_questions[i].status === "easy") {
+        questionsArray.push(user_questions[i]);
+      }
+    }
+    console.log('in events button clicked');
+    console.log(questionsArray);
+    ui.loopThroughQuestions(questionsArray, false);
+  });
+}
+
+const onClickHardBucketButton = (event) => {
+  event.preventDefault();
+  // get all of the new user_questions
+  api.getUserQuestions()
+  .then(function (user_questions_object) {
+    console.log('in hard bucket');
+    console.log(user_questions_object);
+    let user_questions = user_questions_object['user_questions'];
     // console.log(user_questions);
     let questionsArray = [];
     for (let i in user_questions) {
-      if (user_questions[i].status === "") {
-        questionsArray.push(user_questions[i]['question']);
+      if (user_questions[i].status === "hard") {
+        questionsArray.push(user_questions[i]);
       }
     }
+    console.log('in events button clicked');
     console.log(questionsArray);
-    ui.loopThroughQuestions(questionsArray);
+    ui.loopThroughQuestions(questionsArray, false);
   });
 }
 
@@ -190,8 +235,8 @@ const addHandlers = () => {
   // $(document).on('click', '#stop', onChooseWhatToStudy);
 
   $(document).on('click','#newBucket', onClickNewBucketButton);
-  // $(document).on('click','#easyBucket', onClickEasyBucketButton);
-  // $(document).on('click','#hardBucket', onClickHardBucketButton);
+  $(document).on('click','#easyBucket', onClickEasyBucketButton);
+  $(document).on('click','#hardBucket', onClickHardBucketButton);
 
   // $(document).on('click', '#right', onChangeStatusEasy);
   // $(document).on('click', '#wrong', onChangeStatusHard);

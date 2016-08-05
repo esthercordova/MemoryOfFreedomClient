@@ -8,6 +8,10 @@ const showQuestionTemplate = require('../../../templates/showquestion.handlebars
 const showStatisticTemplate = require('../../../templates/statistic.handlebars');
 const chooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
 
+let questionsLength;
+let ii;
+let clickedButton;
+let questions;
 
 const showButtons = (countObject) => {
   console.log('inside fun');
@@ -25,14 +29,12 @@ const countQuestionsOfEachType = (shouldShowButtons) => {
   .then(function (user_questions_object) {
     let user_questions = user_questions_object['user_questions'];
 
-    console.log(user_questions);
-
     let nEasy = 0;
     let nHard = 0;
     let nNew = 0;
 
     for (let i in user_questions) {
-      console.log(user_questions[i]);
+
       if (user_questions[i].status === "easy") {
         nEasy+=1;
       }else if (user_questions[i].status === "hard") {
@@ -45,6 +47,7 @@ const countQuestionsOfEachType = (shouldShowButtons) => {
       }
     }
     let countObject = {'nEasy':nEasy, 'nHard':nHard, 'nNew':nNew};
+    console.log('inside count questions');
     console.log(countObject);
     showCount(countObject);
     if (shouldShowButtons) {
@@ -53,69 +56,83 @@ const countQuestionsOfEachType = (shouldShowButtons) => {
   });
 }
 
-const onChangeQuestionStatus = (question_id, status) => {
-
+const onChangeQuestionStatus = (question, status) => {
+  let user_question_id = question.id;
+  let question_id = question['question'].id;
   let user_id = app.user.id;
   let notes = "";
-  api.getJointTableId(question_id, user_id)
-  .then(function(data){
-    let user_question_table_id = data.user_questions[0].id;
-    console.log(data);
-    console.log("user_question ID " + data.user_questions[0].id);
+
+    console.log('inside on change');
+    console.log(question);
+    console.log("user_question ID " + user_question_id);
     console.log("question_id " + question_id + "user_id " + user_id);
     console.log("token" + app.user.token)
-      api.changeQuestionStatus( user_id,question_id,status,
-        notes,user_question_table_id)
-  }).then(function () {
-    countQuestionsOfEachType(shouldShowButtons=false);
+      api.changeQuestionStatus( user_id, question_id, status,
+        notes,user_question_id)
+        .then(function () {
+          countQuestionsOfEachType(false);
+        }).then(function () {
+          if (ii >= questionsLength) {
+            console.log('length too much');
+            countQuestionsOfEachType(true);
+          }
   })
   .fail(function(error){
     reject(error);
   });
 }
 
-const loopThroughQuestions = (questions) => {
-  let questionsLength = questions.length;
-  let i = 0;
-  let question = questions[i];
-  console.log(question);
-  // hide start page
-  $("#question").html(showQuestionTemplate(question));
-  $("#answer").hide();
+const loopThroughQuestions = (questionsNew, start) => {
+  questions = questionsNew;
+  console.log("new questions");
+  console.log(questions);
+  questionsLength = questions.length;
+  ii = 0;
+  console.log('first i = ' + ii);
+  console.log('questions length = ' + questionsLength);
 
-  $(document.body).on('click', '.showAnswerButton', function () {
+  // hide start page
+  $("#question").html(showQuestionTemplate(questions[ii]['question']));
+  $("#answer").hide();
+  if (start) {
+
+  $("body").on('click', '.showAnswerButton', function () {
      $("#answer").show();
      $('.showAnswerButton').hide();
    });
    // start to cycle through the questions
-   $(document.body).on('click', '.answerButton', function () {
-    let clickedButton = this.id;
-    i++;
+   $("body").on('click', '.answerButton', function () {
+    clickedButton = this.id;
 
-    $("#question").html(showQuestionTemplate(questions[i]));
-    $("#answer").hide();
+    console.log("click button " + clickedButton);
+    console.log("i = " + ii);
 
+    console.log(questions[ii]);
 
     if (clickedButton === "right") {
 
       let status = "easy";
       // because of variable scope has be be required here again
-      let questionsEvents = require('./events.js');
-      let question_id = questions[i-1].id;
-      onChangeQuestionStatus(question_id, status);
+      // let questionsEvents = require('./events.js');
+      // let question_id = questions[i].id;
+      onChangeQuestionStatus(questions[ii], status);
       } else {
       let status = "hard";
-      let questionsEvents = require('./events.js');
-      let question_id = questions[i-1].id;
-      onChangeQuestionStatus(question_id, status);
+      // let questionsEvents = require('./events.js');
+      // let question_id = questions[i].id;
+      onChangeQuestionStatus(questions[ii], status);
+    }
+    ii++;
+
+    if (ii<questionsLength) {
+      $("#question").html(showQuestionTemplate(questions[ii]['question']));
+      $("#answer").hide();
+
     }
 
 
-    if (i >= questionsLength-1) {
-      console.log('length too much');
-      countQuestionsOfEachType(shouldShowButtons=true);
-    }
    });
+ }
   };
 
 

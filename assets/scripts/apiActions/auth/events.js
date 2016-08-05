@@ -9,34 +9,7 @@ const questionApi = require('../questions/api');
 const questionUi = require('../questions/ui');
 
 const signInSuccessCallback = function(){
-      questionApi.getUserQuestions()
-      .then(function (user_questions_object) {
-        let user_questions = user_questions_object['user_questions'];
-
-        console.log(user_questions);
-
-        let nEasy = 0;
-        let nHard = 0;
-        let nNew = 0;
-
-        for (let i in user_questions) {
-          console.log(user_questions[i]);
-          if (user_questions[i].status === "easy") {
-            nEasy+=1;
-          }else if (user_questions[i].status === "hard") {
-            nHard+=1;
-          }
-          else if (user_questions[i].status === "") {
-            nNew+=1;
-          }else{
-            console.log("Error: status must be 'easy', 'hard', or ''");
-          }
-        }
-        let countObject = {'nEasy':nEasy, 'nHard':nHard, 'nNew':nNew};
-        console.log(countObject);
-        questionUi.showButtons(countObject);
-        questionUi.showCount(countObject);
-      });
+      questionUi.countQuestionsOfEachType(true);
 };
 
 const onSignUp = function(event){
