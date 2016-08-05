@@ -10,30 +10,25 @@ const questionUi = require('../questions/ui');
 
 const signInSuccessCallback = function(){
       questionApi.getUserQuestions()
-      .then(function (user_questions_object) {
-        let user_questions = user_questions_object['user_questions'];
-
-        console.log(user_questions);
+      .next(function (user_questions) {
 
         let nEasy = 0;
         let nHard = 0;
         let nNew = 0;
 
-        for (let i in user_questions) {
-          console.log(user_questions[i]);
-          if (user_questions[i].status === "easy") {
+        for (let question in user_questions) {
+          if (question.status === "easy") {
             nEasy+=1;
-          }else if (user_questions[i].status === "hard") {
+          }else if (question.status === "hard") {
             nHard+=1;
-          }
-          else if (user_questions[i].status === "") {
+          }else if (question.status === "") {
             nNew+=1;
-          }else{
-            console.log("Error: status must be 'easy', 'hard', or ''");
+          }
+          else{
+            console.log("Error: question.status must be 'easy', 'hard', or ''.");
           }
         }
-        let countObject = {'nEasy':nEasy, 'nHard':nHard, 'nNew':nNew};
-        console.log(countObject);
+        let countObject = {'easy':nEasy, 'hard':nHard, 'new':nNew};
         questionUi.showButtons(countObject);
         questionUi.showCount(countObject);
       });
@@ -53,7 +48,6 @@ const onSignUp = function(event){
     return credentials;
   })
   .then(api.signIn)
-  .then(ui.signInSuccess)
   .then((data) => {
     //change i to number of questions you have plus 1
     for (let i = 1; i < 10; i++) {
@@ -61,9 +55,10 @@ const onSignUp = function(event){
       // console.log("data " , data);
       // console.log("user id" + data.user.id);
       questionApi.createUserQuestions(data, question_id)
-      .then(questionUi.createUserQuestionsSuccess)
+      .next(questionUi.createUserQuestionsSuccess)
     }
-  }).then(signInSuccessCallback);
+  })
+  .then(signInSuccessCallback)
 };
 
 const onSignIn = function(event){

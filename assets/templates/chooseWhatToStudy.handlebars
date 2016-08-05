@@ -2,5 +2,12 @@
 
 <h3> Which questions do you want to study? </h1>
 
-<button id="easyBucket" class="btn btn-secondary">Easy/Right</button>
-<button id="hardBucket" class="btn btn-secondary">Hard/Wrong</button>
+{{#if nNew }}
+  <button id="newBucket" class="btn btn-secondary">New</button>
+{{/if}}
+{{#if nEasy }}
+  <button id="easyBucket" class="btn btn-secondary">Easy/Right</button>
+{{/if}}
+{{#if nHard }}
+  <button id="hardBucket" class="btn btn-secondary">Hard/Wrong</button>
+{{/if}}

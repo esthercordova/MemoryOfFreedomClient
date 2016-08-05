@@ -12,6 +12,16 @@ const getStatusStatistics = () => {
   });
 };
 
+const getUserQuestions = () => {
+  return $.ajax({
+    url: app.host + '/user_questions',
+    method: "GET",
+    headers: {
+      Authorization: 'Token token=' + app.user.token,
+    }
+  });
+};
+
 const showQuestions = () => {
   return $.ajax({
     url: app.host + '/questions' ,
@@ -165,11 +175,24 @@ const getProfileId = () => {
       reject(error);
     }
   });
-  // console.log("profielId API call:", data);
 });
 };
 
+const populateEasyBucket = () => {
+  return $.ajax({
+    url: app.host + '/user_questions/easy',
+    method: "GET",
+    headers: {
+      Authorization: 'Token token=' + app.user.token,
+    }
+  });
+};
+
+// const populateHardBucket = () => {
+//
+// };
 module.exports = {
+  getUserQuestions,
   showQuestions,
   changeQuestionStatus,
   getStatusStatistics,
@@ -181,4 +204,6 @@ module.exports = {
   addNickname,
   deleteNickname,
   getProfileId,
+  populateEasyBucket,
+  // populateHardBucket,
 };

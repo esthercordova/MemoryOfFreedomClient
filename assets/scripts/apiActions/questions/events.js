@@ -7,34 +7,45 @@ const app = require('../../app');
 
 const showChooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
 
-const populatingQuestionsCallback = (data) => {
-  ui.populatingQuestions(data);
-  api.getStatusStatistics()
-  .done(ui.gettingStatistics)
-  .fail(ui.failure);
-};
-
-const onPopulatingQuestions = () => {
-  $('#startQuestions').hide();
-  api.showQuestions()
-  .done(populatingQuestionsCallback)
-  .fail(ui.failure);
-};
-
-const onShowStatictics = (event) => {
-  event.preventDefault();
-  api.getStatusStatistics()
-  .done(ui.gettingStatistics)
-  .fail(ui.failure);
-};
-
-const onChooseWhatToStudy = () => {
-  $(".start").html(showChooseWhatToStudyTemplate());
-};
+// const onPopulatingQuestions = () => {
+//   $('#startQuestions').hide();
+//   api.showQuestions()
+//   .done(ui.populatingQuestions)
+//   .fail(ui.failure);
+// };
+//
+// const onShowStatictics = (event) => {
+//   event.preventDefault();
+//   api.getStatusStatistics()
+//   .done(ui.gettingStatistics)
+//   .fail(ui.failure);
+// };
+//
+// const onChooseWhatToStudy = () => {
+//   $(".start").html(showChooseWhatToStudyTemplate());
+// };
 
 //first get joint table id then PATCH
 //Only difference between onChangeStatusEasy and onChangeStatusHard is the
 //harcoded status variable - when time refactor
+
+const onClickNewBucketButton = (event) => {
+  event.preventDefault();
+  // get all of the new user_questions
+  api.getUserQuestions()
+  .then(function (user_questions_object) {
+    let user_questions = user_questions_object['user_questions'];
+    // console.log(user_questions);
+    let questionsArray = [];
+    for (let i in user_questions) {
+      if (user_questions[i].status === "") {
+        questionsArray.push(user_questions[i]['question']);
+      }
+    }
+    console.log(questionsArray);
+    ui.loopThroughQuestions(questionsArray);
+  });
+}
 
 // need to add in the end ui.gettingStatistics to update statistics on front end
 const onChangeStatusEasy = (event) => {
@@ -50,15 +61,16 @@ const onChangeStatusEasy = (event) => {
     console.log(data);
     console.log("user_question ID " + data.user_questions[0].id);
     console.log("question_id " + question_id + "user_id " + user_id);
-    console.log("token" + app.user.token);
-    api.changeQuestionStatus( user_id,question_id,status,
-      notes,user_question_table_id);
+    console.log("token" + app.user.token).then(function() {
+      api.changeQuestionStatus( user_id,question_id,status,
+        notes,user_question_table_id)
+    })
   })
-  .then(function(){
-    api.getStatusStatistics()
-    .done(ui.gettingStatistics)
-    .fail(ui.failure);
-  })
+  // .then(function(event){
+  //   api.getStatusStatistics()
+  //   .done(ui.gettingStatistics)
+  //   .fail(ui.failure);
+  // })
   .fail(function(error){
     reject(error);
   });
@@ -80,11 +92,6 @@ const onChangeStatusHard = (event) => {
     console.log("question_id " + question_id + "user_id " + user_id);
     console.log("token" + app.user.token);
     api.changeQuestionStatus( user_id,question_id,status, notes,user_question_table_id)
-  })
-  .then(function(){
-    api.getStatusStatistics()
-    .done(ui.gettingStatistics)
-    .fail(ui.failure);
   })
   .fail(function(data){
     reject(error);
@@ -171,9 +178,16 @@ console.log("app profile ", app);
 
 
 const addHandlers = () => {
-  $(document).on('click','#start', onShowStatictics);
-  $(document).on('click', '#start',onPopulatingQuestions);
-  $(document).on('click', '#stop', onChooseWhatToStudy);
+  // $(document).on('click','#start', onShowStatictics);
+  // $(document).on('click','#right', onShowStatictics);
+  // $(document).on('click','#wrong', onShowStatictics);
+
+  // $(document).on('click', '#start',onPopulatingQuestions);
+  // $(document).on('click', '#stop', onChooseWhatToStudy);
+
+  $(document).on('click','#newBucket', onClickNewBucketButton);
+  // $(document).on('click','#easyBucket', onClickEasyBucketButton);
+  // $(document).on('click','#hardBucket', onClickHardBucketButton);
 
   $(document).on('click', '#right', onChangeStatusEasy);
   $(document).on('click', '#wrong', onChangeStatusHard);
@@ -188,8 +202,8 @@ const addHandlers = () => {
 
 module.exports = {
   addHandlers,
-  onPopulatingQuestions,
-  onShowStatictics,
+  // onPopulatingQuestions,
+  // onShowStatictics,
   onSaveNote,
   onDeleteNote,
   onDeleteQuestion,

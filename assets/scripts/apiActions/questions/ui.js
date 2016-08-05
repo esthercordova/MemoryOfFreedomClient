@@ -8,6 +8,52 @@ const showQuestionTemplate = require('../../../templates/showquestion.handlebars
 const showStatisticTemplate = require('../../../templates/statistic.handlebars');
 const chooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
 
+
+const showButtons = (countObject) => {
+  $('.start').html(chooseWhatToStudyTemplate(countObject));
+}
+
+const showCount = (countObject) => {
+  $("#statistic").html(showStatisticTemplate(countObject));
+}
+
+const loopThroughQuestions = (questions) => {
+  let i = 0;
+  let question = questions[i];
+  console.log(question);
+  // hide start page
+  $("#question").html(showQuestionTemplate(question));
+  $("#answer").hide();
+
+  $(document.body).on('click', '.showAnswerButton', function () {
+     $("#answer").show();
+     $('.showAnswerButton').hide();
+   });
+   // start to cycle through the questions
+   $(document.body).on('click', '.answerButton', function () {
+    let clickedButton = this.id;
+    i++;
+
+    $("#question").html(showQuestionTemplate(questions[i]));
+    $("#answer").hide();
+
+    if (clickedButton === "right") {
+
+      let status = "easy";
+      // because of variable scope has be be required here again
+      let questionsEvents = require('./events.js');
+      let question_id = questions[i-1].id;
+      // questionsEvents.onChangeQuestionStatus(question_id, status);
+      } else {
+      let status = "hard";
+      let questionsEvents = require('./events.js');
+      let question_id = questions[i-1].id;
+      // questionsEvents.onChangeQuestionStatus(question_id, status);
+    }
+   });
+  };
+
+
 const addNicknameSuccess = () => {
   $('#nickname').val(' ');
   api.getProfileId()
@@ -46,9 +92,8 @@ const failure = (error) => {
 };
 
 
-const gettingStatistics = function (data) {
+const gettingStatistics = function (user_questions) {
   console.log("in getShow statistic");
-  let user_questions = data.user_questions;
   let easyCount = 0 ;
   let hardCount = 0 ;
   let totalCount = 0;
@@ -68,10 +113,52 @@ const gettingStatistics = function (data) {
   };
   $("#statistic").html(showStatisticTemplate(statData));
 
-  if (totalCount>=8) {
-      $('.start').html(chooseWhatToStudyTemplate());
-  }
+  // if (totalCount>=8) {
+  //     $('.start').html(chooseWhatToStudyTemplate());
+  // }
 };
+
+const populatingEasyQuestions = function (data) {
+  let questions = [];
+  for (var q in data.questions) {
+    if (q.status === "easy") {
+      questions.push(question);
+    }
+  }
+
+  let i = 0;
+  let question = questions[i];
+  // hide start page
+  $("#question").html(showQuestionTemplate(question));
+  $("#answer").hide();
+
+  $(document.body).on('click', '.showAnswerButton', function () {
+     $("#answer").show();
+     $('.showAnswerButton').hide();
+   });
+   // start to cycle through the questions
+   $(document.body).on('click', '.answerButton', function () {
+    let clickedButton = this.id;
+    i++;
+
+    $("#question").html(showQuestionTemplate(questions[i]));
+    $("#answer").hide();
+
+    if (clickedButton === "right") {
+
+      let status = "easy";
+      // because of variable scope has be be required here again
+      let questionsEvents = require('./events.js');
+      let question_id = questions[i-1].id;
+      // questionsEvents.onChangeQuestionStatus(question_id, status);
+      } else {
+      let status = "hard";
+      let questionsEvents = require('./events.js');
+      let question_id = questions[i-1].id;
+      // questionsEvents.onChangeQuestionStatus(question_id, status);
+    }
+   });
+}
 
  const populatingQuestions = function (data) {
    let questions = data.questions;
@@ -135,4 +222,7 @@ module.exports = {
   addNicknameSuccess,
   deleteNicknameSuccess,
   getProfileIdSuccess,
+  showButtons,
+  showCount,
+  loopThroughQuestions,
 };
