@@ -44,12 +44,15 @@ const onChangeStatusEasy = (event) => {
     console.log("user_question ID " + data.user_questions[0].id);
     console.log("question_id " + question_id + "user_id " + user_id);
     console.log("token" + app.user.token);
-    api.changeQuestionStatus( user_id,question_id,status, notes,user_question_table_id)
+    api.changeQuestionStatus( user_id,question_id,status,
+      notes,user_question_table_id);
   })
-  // .then(function(data){
-  //   ui.gettingStatistics(data)
-  // })
-  .fail(function(data){
+  .then(function(){
+    api.getStatusStatistics()
+    .done(ui.gettingStatistics)
+    .fail(ui.failure);
+  })
+  .fail(function(error){
     reject(error);
   });
 });
@@ -153,25 +156,10 @@ console.log("app profile ", app);
   .then(ui.deleteNicknameSuccess)
   .catch(error => console.error(error));
 };
-//   .done(function(data){
-//     console.log("profile data " , data);
-//     let profileId = data.profile.id;
-//     return profileId;
-//     console.log("id" , profileId);
-//     api.deleteNickname(profileId)
-//     .then(ui.deleteNicknameSuccess)
-//   })
-//   .fail(function(data){
-//     reject(error);
-//   });
-// });
-// };
+
 
 const addHandlers = () => {
   $(document).on('click','#start', onShowStatictics);
-  $(document).on('click','#right', onShowStatictics);
-  $(document).on('click','#wrong', onShowStatictics);
-
   $(document).on('click', '#start',onPopulatingQuestions);
   $(document).on('click', '#stop', onChooseWhatToStudy);
 
