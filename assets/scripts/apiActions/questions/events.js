@@ -7,10 +7,17 @@ const app = require('../../app');
 
 const showChooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
 
+const populatingQuestionsCallback = (data) => {
+  ui.populatingQuestions(data);
+  api.getStatusStatistics()
+  .done(ui.gettingStatistics)
+  .fail(ui.failure);
+};
+
 const onPopulatingQuestions = () => {
   $('#startQuestions').hide();
   api.showQuestions()
-  .done(ui.populatingQuestions)
+  .done(populatingQuestionsCallback)
   .fail(ui.failure);
 };
 
