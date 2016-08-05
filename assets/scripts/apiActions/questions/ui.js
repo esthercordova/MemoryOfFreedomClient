@@ -10,6 +10,9 @@ const chooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.
 
 
 const showButtons = (countObject) => {
+  console.log('inside fun');
+  console.log(countObject);
+  $('.start').show();
   $('.start').html(chooseWhatToStudyTemplate(countObject));
 }
 
@@ -17,7 +20,62 @@ const showCount = (countObject) => {
   $("#statistic").html(showStatisticTemplate(countObject));
 }
 
+const countQuestionsOfEachType = (shouldShowButtons) => {
+  api.getUserQuestions()
+  .then(function (user_questions_object) {
+    let user_questions = user_questions_object['user_questions'];
+
+    console.log(user_questions);
+
+    let nEasy = 0;
+    let nHard = 0;
+    let nNew = 0;
+
+    for (let i in user_questions) {
+      console.log(user_questions[i]);
+      if (user_questions[i].status === "easy") {
+        nEasy+=1;
+      }else if (user_questions[i].status === "hard") {
+        nHard+=1;
+      }
+      else if (user_questions[i].status === "") {
+        nNew+=1;
+      }else{
+        console.log("Error: status must be 'easy', 'hard', or ''");
+      }
+    }
+    let countObject = {'nEasy':nEasy, 'nHard':nHard, 'nNew':nNew};
+    console.log(countObject);
+    showCount(countObject);
+    if (shouldShowButtons) {
+      showButtons(countObject);
+    }
+  });
+}
+
+const onChangeQuestionStatus = (question_id, status) => {
+
+  let user_id = app.user.id;
+  let notes = "";
+  api.getJointTableId(question_id, user_id)
+  .then(function(data){
+    let user_question_table_id = data.user_questions[0].id;
+    console.log(data);
+    console.log("user_question ID " + data.user_questions[0].id);
+    console.log("question_id " + question_id + "user_id " + user_id);
+    console.log("token" + app.user.token)
+      api.changeQuestionStatus( user_id,question_id,status,
+        notes,user_question_table_id)
+  }).then(function () {
+    countQuestionsOfEachType(shouldShowButtons=false);
+  })
+  .fail(function(error){
+    reject(error);
+  });
+}
+
 const loopThroughQuestions = (questions) => {
+  let questionsLength = questions.length;
   let i = 0;
   let question = questions[i];
   console.log(question);
@@ -37,18 +95,25 @@ const loopThroughQuestions = (questions) => {
     $("#question").html(showQuestionTemplate(questions[i]));
     $("#answer").hide();
 
+
     if (clickedButton === "right") {
 
       let status = "easy";
       // because of variable scope has be be required here again
       let questionsEvents = require('./events.js');
       let question_id = questions[i-1].id;
-      // questionsEvents.onChangeQuestionStatus(question_id, status);
+      onChangeQuestionStatus(question_id, status);
       } else {
       let status = "hard";
       let questionsEvents = require('./events.js');
       let question_id = questions[i-1].id;
-      // questionsEvents.onChangeQuestionStatus(question_id, status);
+      onChangeQuestionStatus(question_id, status);
+    }
+
+
+    if (i >= questionsLength-1) {
+      console.log('length too much');
+      countQuestionsOfEachType(shouldShowButtons=true);
     }
    });
   };
@@ -92,110 +157,6 @@ const failure = (error) => {
 };
 
 
-const gettingStatistics = function (user_questions) {
-  console.log("in getShow statistic");
-  let easyCount = 0 ;
-  let hardCount = 0 ;
-  let totalCount = 0;
-  $.each(user_questions, function(key, value) {
-    if(value.status === "easy") {
-      totalCount+=1;
-      return easyCount += 1;
-    } else if (value.status === "hard"){
-      totalCount+=1;
-      return hardCount += 1;
-    }
-  });
-  console.log("total count " + totalCount);
-  let statData = {
-    easy: easyCount,
-    hard: hardCount,
-  };
-  $("#statistic").html(showStatisticTemplate(statData));
-
-  // if (totalCount>=8) {
-  //     $('.start').html(chooseWhatToStudyTemplate());
-  // }
-};
-
-const populatingEasyQuestions = function (data) {
-  let questions = [];
-  for (var q in data.questions) {
-    if (q.status === "easy") {
-      questions.push(question);
-    }
-  }
-
-  let i = 0;
-  let question = questions[i];
-  // hide start page
-  $("#question").html(showQuestionTemplate(question));
-  $("#answer").hide();
-
-  $(document.body).on('click', '.showAnswerButton', function () {
-     $("#answer").show();
-     $('.showAnswerButton').hide();
-   });
-   // start to cycle through the questions
-   $(document.body).on('click', '.answerButton', function () {
-    let clickedButton = this.id;
-    i++;
-
-    $("#question").html(showQuestionTemplate(questions[i]));
-    $("#answer").hide();
-
-    if (clickedButton === "right") {
-
-      let status = "easy";
-      // because of variable scope has be be required here again
-      let questionsEvents = require('./events.js');
-      let question_id = questions[i-1].id;
-      // questionsEvents.onChangeQuestionStatus(question_id, status);
-      } else {
-      let status = "hard";
-      let questionsEvents = require('./events.js');
-      let question_id = questions[i-1].id;
-      // questionsEvents.onChangeQuestionStatus(question_id, status);
-    }
-   });
-}
-
- const populatingQuestions = function (data) {
-   let questions = data.questions;
-   let i = 0;
-   let question = questions[i];
-   // hide start page
-   $("#question").html(showQuestionTemplate(question));
-   $("#answer").hide();
-
-   $(document.body).on('click', '.showAnswerButton', function () {
-      $("#answer").show();
-      $('.showAnswerButton').hide();
-    });
-    // start to cycle through the questions
-    $(document.body).on('click', '.answerButton', function () {
-     let clickedButton = this.id;
-     i++;
-
-     $("#question").html(showQuestionTemplate(questions[i]));
-     $("#answer").hide();
-
-     if (clickedButton === "right") {
-
-       let status = "easy";
-       // because of variable scope has be be required here again
-       let questionsEvents = require('./events.js');
-       let question_id = questions[i-1].id;
-       // questionsEvents.onChangeQuestionStatus(question_id, status);
-       } else {
-       let status = "hard";
-       let questionsEvents = require('./events.js');
-       let question_id = questions[i-1].id;
-       // questionsEvents.onChangeQuestionStatus(question_id, status);
-     }
-    });
-  };
-
 const createUserQuestionsSuccess = () => {
 };
 
@@ -215,8 +176,6 @@ const getProfileIdSuccess = (data) => {
 module.exports = {
   success,
   failure,
-  gettingStatistics,
-  populatingQuestions,
   changeQuestionStatusSuccess,
   createUserQuestionsSuccess,
   addNicknameSuccess,
@@ -225,4 +184,5 @@ module.exports = {
   showButtons,
   showCount,
   loopThroughQuestions,
+  countQuestionsOfEachType
 };

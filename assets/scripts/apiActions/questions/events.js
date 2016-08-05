@@ -47,6 +47,10 @@ const onClickNewBucketButton = (event) => {
   });
 }
 
+const onChangeQuestionStatus = () => {
+
+}
+
 // need to add in the end ui.gettingStatistics to update statistics on front end
 const onChangeStatusEasy = (event) => {
   return new Promise(function(resolve,reject) {
@@ -66,11 +70,11 @@ const onChangeStatusEasy = (event) => {
         notes,user_question_table_id)
     })
   })
-  // .then(function(event){
-  //   api.getStatusStatistics()
-  //   .done(ui.gettingStatistics)
-  //   .fail(ui.failure);
-  // })
+  .then(function(event){
+    api.getStatusStatistics()
+    .done(ui.gettingStatistics)
+    .fail(ui.failure);
+  })
   .fail(function(error){
     reject(error);
   });
@@ -189,8 +193,8 @@ const addHandlers = () => {
   // $(document).on('click','#easyBucket', onClickEasyBucketButton);
   // $(document).on('click','#hardBucket', onClickHardBucketButton);
 
-  $(document).on('click', '#right', onChangeStatusEasy);
-  $(document).on('click', '#wrong', onChangeStatusHard);
+  // $(document).on('click', '#right', onChangeStatusEasy);
+  // $(document).on('click', '#wrong', onChangeStatusHard);
   $(document).on('click','#saveNote', onSaveNote);
   $(document).on('click','#deleteNote', onDeleteNote);
 
