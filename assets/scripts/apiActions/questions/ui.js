@@ -12,6 +12,7 @@ let questionsLength;
 let ii;
 let clickedButton;
 let questions;
+let firstTime = true;
 
 const showButtons = (countObject) => {
   console.log('inside fun');
@@ -82,7 +83,7 @@ const onChangeQuestionStatus = (question, status) => {
   });
 }
 
-const loopThroughQuestions = (questionsNew, start) => {
+const loopThroughQuestions = (questionsNew) => {
   questions = questionsNew;
   console.log("new questions");
   console.log(questions);
@@ -94,7 +95,9 @@ const loopThroughQuestions = (questionsNew, start) => {
   // hide start page
   $("#question").html(showQuestionTemplate(questions[ii]['question']));
   $("#answer").hide();
-  if (start) {
+  if (firstTime) {
+
+    firstTime = false;
 
   $("body").on('click', '.showAnswerButton', function () {
      $("#answer").show();

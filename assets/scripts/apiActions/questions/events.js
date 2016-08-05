@@ -21,9 +21,9 @@ const showChooseWhatToStudyTemplate = require('../../../templates/chooseWhatToSt
 //   .fail(ui.failure);
 // };
 //
-// const onChooseWhatToStudy = () => {
-//   $(".start").html(showChooseWhatToStudyTemplate());
-// };
+const onChooseWhatToStudy = () => {
+  ui.countQuestionsOfEachType(true);
+};
 
 //first get joint table id then PATCH
 //Only difference between onChangeStatusEasy and onChangeStatusHard is the
@@ -45,7 +45,7 @@ const onClickNewBucketButton = (event) => {
     }
     console.log('in events button clicked');
     console.log(questionsArray);
-    ui.loopThroughQuestions(questionsArray, true);
+    ui.loopThroughQuestions(questionsArray);
   });
 }
 
@@ -67,7 +67,7 @@ const onClickEasyBucketButton = (event) => {
     }
     console.log('in events button clicked');
     console.log(questionsArray);
-    ui.loopThroughQuestions(questionsArray, false);
+    ui.loopThroughQuestions(questionsArray);
   });
 }
 
@@ -88,7 +88,7 @@ const onClickHardBucketButton = (event) => {
     }
     console.log('in events button clicked');
     console.log(questionsArray);
-    ui.loopThroughQuestions(questionsArray, false);
+    ui.loopThroughQuestions(questionsArray);
   });
 }
 
@@ -232,7 +232,7 @@ const addHandlers = () => {
   // $(document).on('click','#wrong', onShowStatictics);
 
   // $(document).on('click', '#start',onPopulatingQuestions);
-  // $(document).on('click', '#stop', onChooseWhatToStudy);
+  $(document).on('click', '#stop', onChooseWhatToStudy);
 
   $(document).on('click','#newBucket', onClickNewBucketButton);
   $(document).on('click','#easyBucket', onClickEasyBucketButton);

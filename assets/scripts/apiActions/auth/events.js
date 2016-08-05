@@ -9,7 +9,7 @@ const questionApi = require('../questions/api');
 const questionUi = require('../questions/ui');
 
 const signInSuccessCallback = function(){
-      questionUi.countQuestionsOfEachType(true);
+      questionUi.countQuestionsOfEachType(true, true);
 };
 
 const onSignUp = function(event){
