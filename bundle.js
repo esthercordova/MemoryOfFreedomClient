@@ -233,8 +233,7 @@ webpackJsonp([0],[
 	'use strict';
 
 	var app = {
-	  // host: 'https://memoryoffreedom.herokuapp.com/',
-	  host: 'http://localhost:3000'
+	  host: 'https://memoryoffreedom.herokuapp.com/'
 	};
 
 	module.exports = app;
