@@ -16,7 +16,7 @@ h5 {
 }
 
 #question {
-	width: 60%;
+	width: 80%;
 	margin: 0 auto;
     text-align: center;
     list-style-position: inside;
@@ -24,7 +24,7 @@ h5 {
 
 .answerLeft {
 	text-align: left;
-	margin-left: 35%;
+	margin-left: 25%;
 
 }
 
@@ -34,4 +34,13 @@ table, th, td {
    padding: 5px;
    margin: 0 auto;
    background-color: $light-red;
+}
+
+.backgroundBox {
+	background-color: $light-gray;
+	width: 70%;
+	height: 50%;
+	margin: 0 auto;
+	padding-bottom: 30px;
+	padding-top: 20px;
 }

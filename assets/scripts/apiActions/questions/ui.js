@@ -8,6 +8,10 @@ const showQuestionTemplate = require('../../../templates/showquestion.handlebars
 const showStatisticTemplate = require('../../../templates/statistic.handlebars');
 const chooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
 
+$(window).load(function(){
+       $('#welcomeModal').modal('show');
+   });
+
 let questionsLength;
 let ii;
 let clickedButton;
