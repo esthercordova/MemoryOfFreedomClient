@@ -6,11 +6,13 @@
 </div>
 
 <div id="answer">
-  {{#each answer}}
-  <ul>
-    <li>{{this}}</li>
-  </ul>
-  {{/each}}
+  <div class="answerLeft">
+    {{#each answer}}
+    <ul>
+      <li>{{this}}</li>
+    </ul>
+    {{/each}}
+  </div>
 
   <button id="right" class="btn btn-info answerButton">Easy</button>
   <button id="wrong" class="btn btn-info answerButton">Hard</button>
