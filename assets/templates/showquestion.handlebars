@@ -2,22 +2,24 @@
 
 <h4 class="giveQuestionId" data-id={{id}}>{{title}}</h4>
 <div id="showAnswerButton">
-<button id="showAnswer" class="btn btn-info showAnswerButton">Show me the answer!</button>
+<button id="showAnswer" class="btn btn-grey showAnswerButton">Show me the answer!</button>
 </div>
 
 <div id="answer">
-  {{#each answer}}
-  <ul>
-    <li>{{this}}</li>
-  </ul>
-  {{/each}}
+  <div class="answerLeft">
+    {{#each answer}}
+    <ul>
+      <li>{{this}}</li>
+    </ul>
+    {{/each}}
+  </div>
 
-  <button id="right" class="btn btn-info answerButton">Got it right!</button>
-  <button id="wrong" class="btn btn-info answerButton">Got it wrong</button>
-  <button id="stop" class="btn btn-info">Stop studying</button>
+  <button id="right" class="btn btn-blue answerButton">Easy</button>
+  <button id="wrong" class="btn btn-red answerButton">Hard</button>
+  <button id="stop" class="btn btn-grey">Stop</button>
 
-
-<!-- <div class="form-group">
+{{!-- Notes --}}
+{{!-- <div class="form-group">
     <label for="comment">Add notes to this question:</label>
     <textarea class="form-control" rows="5" id='note'></textarea>
 
@@ -28,6 +30,6 @@
     <button id="deleteNote" type="submit" class="btn btn-secondary">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
-</div> -->
+</div> --}}
 
 </div>
