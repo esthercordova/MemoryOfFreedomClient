@@ -45,7 +45,7 @@ const signInSuccess = (data) => {
     $('#nickname').addClass('borderless');
     $('#nickname').val(app.user.profile.nickname);
   }
-  console.log("app.user", app.user);
+ 
   $(".start").html(showStartTemplate(data));
   $('#signInMessage').html('You successfully logged in!');
   $('#signUpMessage').html('');

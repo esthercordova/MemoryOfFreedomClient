@@ -1,6 +1,5 @@
 'use strict';
 
-// const getFormFields = require('../../../../lib/get-form-fields');
 const api = require('./api');
 const ui = require('./ui');
 const app = require('../../app');
@@ -47,7 +46,7 @@ const onClickNewBucketButton = (event) => {
     console.log(questionsArray);
     ui.loopThroughQuestions(questionsArray);
   });
-}
+};
 
 const onClickEasyBucketButton = (event) => {
   event.preventDefault();
@@ -94,7 +93,7 @@ const onClickHardBucketButton = (event) => {
 
 const onChangeQuestionStatus = () => {
 
-}
+};
 
 // need to add in the end ui.gettingStatistics to update statistics on front end
 const onChangeStatusEasy = (event) => {
@@ -113,7 +112,7 @@ const onChangeStatusEasy = (event) => {
     console.log("token" + app.user.token).then(function() {
       api.changeQuestionStatus( user_id,question_id,status,
         notes,user_question_table_id)
-    })
+    });
   })
   .then(function(event){
     api.getStatusStatistics()
@@ -148,60 +147,60 @@ const onChangeStatusHard = (event) => {
 });
 };
 
-const onSaveNote = (event) => {
-  return new Promise(function(resolve,reject) {
-  event.preventDefault();
-  let question_id = $('.giveQuestionId').attr('data-id') - 1;
-  let user_id = app.user.id;
-  let notes = $("#note").val();
-  api.getJointTableId(question_id, user_id)
-  .done(function(data){
-    let user_question_table_id = data.user_questions[0].id;
-    api.saveNote( user_id,question_id, notes,user_question_table_id)
-  })
-  .fail(function(data){
-    reject(error);
-  });
-});
-};
+// const onSaveNote = (event) => {
+//   return new Promise(function(resolve,reject) {
+//   event.preventDefault();
+//   let question_id = $('.giveQuestionId').attr('data-id') - 1;
+//   let user_id = app.user.id;
+//   let notes = $("#note").val();
+//   api.getJointTableId(question_id, user_id)
+//   .done(function(data){
+//     let user_question_table_id = data.user_questions[0].id;
+//     api.saveNote( user_id,question_id, notes,user_question_table_id)
+//   })
+//   .fail(function(data){
+//     reject(error);
+//   });
+// });
+// };
 
-const onDeleteNote = (event) => {
-  return new Promise(function(resolve,reject) {
-  event.preventDefault();
-  let question_id = $('.giveQuestionId').attr('data-id') - 1;
-  let user_id = app.user.id;
-  let notes = "";
-  api.getJointTableId(question_id, user_id)
-  .done(function(data){
-    let user_question_table_id = data.user_questions[0].id;
-    api.saveNote( user_id,question_id, notes,user_question_table_id)
-  })
-  .fail(function(data){
-    reject(error);
-  });
-});
-};
+// const onDeleteNote = (event) => {
+//   return new Promise(function(resolve,reject) {
+//   event.preventDefault();
+//   let question_id = $('.giveQuestionId').attr('data-id') - 1;
+//   let user_id = app.user.id;
+//   let notes = "";
+//   api.getJointTableId(question_id, user_id)
+//   .done(function(data){
+//     let user_question_table_id = data.user_questions[0].id;
+//     api.saveNote( user_id,question_id, notes,user_question_table_id)
+//   })
+//   .fail(function(data){
+//     reject(error);
+//   });
+// });
+// };
 
-const onDeleteQuestion = (event) => {
-  return new Promise(function(resolve,reject) {
-  event.preventDefault();
+// const onDeleteQuestion = (event) => {
+//   return new Promise(function(resolve,reject) {
+//   event.preventDefault();
 
 
-  let question_id = $('.giveQuestionId').attr('data-id');
-  let user_id = app.user.id;
-  console.log("question_id"+question_id);
-  console.log("user_id" +user_id);
-  api.getJointTableId(question_id, user_id)
-  .done(function(data){
-    let user_question_table_id = data.user_questions[0].id;
-    console.log("user_question_table_id" + user_question_table_id);
-    api.deleteQuestion(user_question_table_id)
-  })
-  .fail(function(data){
-    reject(error);
-  });
-});
-};
+//   let question_id = $('.giveQuestionId').attr('data-id');
+//   let user_id = app.user.id;
+//   console.log("question_id"+question_id);
+//   console.log("user_id" +user_id);
+//   api.getJointTableId(question_id, user_id)
+//   .done(function(data){
+//     let user_question_table_id = data.user_questions[0].id;
+//     console.log("user_question_table_id" + user_question_table_id);
+//     api.deleteQuestion(user_question_table_id)
+//   })
+//   .fail(function(data){
+//     reject(error);
+//   });
+// });
+// };
 
 const onAddNickname = (event) => {
   event.preventDefault();
@@ -227,23 +226,14 @@ console.log("app profile ", app);
 
 
 const addHandlers = () => {
-  // $(document).on('click','#start', onShowStatictics);
-  // $(document).on('click','#right', onShowStatictics);
-  // $(document).on('click','#wrong', onShowStatictics);
-
-  // $(document).on('click', '#start',onPopulatingQuestions);
   $(document).on('click', '#stop', onChooseWhatToStudy);
-
   $(document).on('click','#newBucket', onClickNewBucketButton);
   $(document).on('click','#easyBucket', onClickEasyBucketButton);
   $(document).on('click','#hardBucket', onClickHardBucketButton);
 
-  // $(document).on('click', '#right', onChangeStatusEasy);
-  // $(document).on('click', '#wrong', onChangeStatusHard);
-  $(document).on('click','#saveNote', onSaveNote);
-  $(document).on('click','#deleteNote', onDeleteNote);
-
-  $(document).on('click','#deleteQuestion', onDeleteQuestion);
+  // $(document).on('click','#saveNote', onSaveNote);
+  // $(document).on('click','#deleteNote', onDeleteNote);
+  // $(document).on('click','#deleteQuestion', onDeleteQuestion);
 
   $(document).on('click','#nicknameSubmit', onAddNickname);
   $(document).on('click','#nicknameDelete', onDeleteNickname);
@@ -253,9 +243,9 @@ module.exports = {
   addHandlers,
   // onPopulatingQuestions,
   // onShowStatictics,
-  onSaveNote,
-  onDeleteNote,
-  onDeleteQuestion,
+  // onSaveNote,
+  // onDeleteNote,
+  // onDeleteQuestion,
   onAddNickname,
   onDeleteNickname,
 };
