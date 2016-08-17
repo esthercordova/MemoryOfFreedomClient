@@ -44,8 +44,9 @@ const signInSuccess = (data) => {
     $('#nicknameSubmit').addClass('hide');
     $('#nickname').addClass('borderless');
     $('#nickname').val(app.user.profile.nickname);
+    $('#welcomeInstructions').hide();
   }
- 
+  
   $(".start").html(showStartTemplate(data));
   $('#signInMessage').html('You successfully logged in!');
   $('#signUpMessage').html('');
@@ -56,6 +57,8 @@ const signInSuccess = (data) => {
   $('#navSignUp').hide();
   $('#navSettings').show();
   $('#navSignOut').show();
+  $('#welcomeInstructions').hide();
+
   return data;
 };
 
@@ -79,9 +82,8 @@ const signOutSuccess = () => {
   $('#navSettings').hide();
   $('#navSignOut').hide();
   $('#statistic').html('');
+  $('#welcomeInstructions').show();
 };
-
-
 
 module.exports = {
   failure,
@@ -91,5 +93,4 @@ module.exports = {
   passwordFailure,
   changePasswordSuccess,
   signInFailure,
-
 };
