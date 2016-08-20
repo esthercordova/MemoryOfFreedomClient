@@ -29,7 +29,7 @@ const onSignUp = function(event){
     for (let i = 1; i < 101; i++) {
       let question_id = i;
       questionApi.createUserQuestions(data, question_id)
-      .then(questionUi.createUserQuestionsSuccess)
+      .then(questionUi.createUserQuestionsSuccess);
     }
   }).then(signInSuccessCallback);
 };

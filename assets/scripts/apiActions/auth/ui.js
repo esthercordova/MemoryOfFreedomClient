@@ -3,14 +3,12 @@ const app = require('../../app.js');
 
 const questionsEvents = require('../questions/events.js');
 const showStartTemplate = require('../../../templates/start.handlebars');
-// const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
 
 $(window).load(function(){
      $('#question').hide();
      $('#navSettings').hide();
      $('#navSignOut').hide();
   });
-
 
 const success = (data) => {
   console.log("data in success is ", data);
@@ -46,7 +44,6 @@ const signInSuccess = (data) => {
     $('#nickname').val(app.user.profile.nickname);
     $('#welcomeInstructions').hide();
   }
-  
   $(".start").html(showStartTemplate(data));
   $('#signInMessage').html('You successfully logged in!');
   $('#signUpMessage').html('');
@@ -58,7 +55,6 @@ const signInSuccess = (data) => {
   $('#navSettings').show();
   $('#navSignOut').show();
   $('#welcomeInstructions').hide();
-
   return data;
 };
 

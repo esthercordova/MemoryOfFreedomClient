@@ -81,51 +81,6 @@ const createUserQuestions = (data, question_id) => {
   });
 };
 
-const saveNote = (user_id, question_id, notes, user_question_table_id) => {
-  return $.ajax({
-  method: 'PATCH',
-  url: app.host + '/user_questions/' +  user_question_table_id,
-  headers: {
-    Authorization: 'Token token=' + app.user.token,
-  },
-  data:
-  {"user_question":{
-                      "user_id":user_id,
-                      "question_id":question_id,
-                      "notes":notes,
-                    }
-  }
-});
-};
-
-const deleteNote = (user_id, question_id, notes, user_question_table_id) => {
-  return $.ajax({
-  method: 'PATCH',
-  url: app.host + '/user_questions/' +  user_question_table_id,
-  headers: {
-    Authorization: 'Token token=' + app.user.token,
-  },
-  data:
-  {"user_question":{
-                      "user_id":user_id,
-                      "question_id":question_id,
-                      "notes":notes,
-                    }
-  }
-});
-};
-
-const deleteQuestion = (user_question_table_id) => {
-  return $.ajax(
-    {
-      url: app.host + '/user_questions/' +  user_question_table_id,
-      method: 'DELETE',
-      headers: {
-        Authorization: 'Token token=' + app.user.token,
-      },
-    });
-};
-
 const addNickname = (nickname) => {
   return $.ajax({
     url: app.host + '/profiles',
@@ -188,9 +143,7 @@ const populateEasyBucket = () => {
   });
 };
 
-// const populateHardBucket = () => {
-//
-// };
+
 module.exports = {
   getUserQuestions,
   showQuestions,
@@ -198,12 +151,7 @@ module.exports = {
   getStatusStatistics,
   createUserQuestions,
   getJointTableId,
-  saveNote,
-  deleteNote,
-  deleteQuestion,
   addNickname,
   deleteNickname,
   getProfileId,
-  populateEasyBucket,
-  // populateHardBucket,
 };
