@@ -2,15 +2,10 @@
 
 const app = require('../../app.js');
 const api = require('./api.js');
-const questionsEvents = require('./events.js');
 
 const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
 const showStatisticTemplate = require('../../../templates/statistic.handlebars');
 const chooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
-
-$(window).load(function(){
-       $('#welcomeModal').modal('show');
-   });
 
 let questionsLength;
 let ii;
@@ -23,23 +18,21 @@ const showButtons = (countObject) => {
   console.log(countObject);
   $('.start').show();
   $('.start').html(chooseWhatToStudyTemplate(countObject));
-}
+};
 
 const showCount = (countObject) => {
   $("#statistic").html(showStatisticTemplate(countObject));
-}
+};
 
 const countQuestionsOfEachType = (shouldShowButtons) => {
   api.getUserQuestions()
   .then(function (user_questions_object) {
     let user_questions = user_questions_object['user_questions'];
-
     let nEasy = 0;
     let nHard = 0;
     let nNew = 0;
 
     for (let i in user_questions) {
-
       if (user_questions[i].status === "easy") {
         nEasy+=1;
       }else if (user_questions[i].status === "hard") {
@@ -48,59 +41,49 @@ const countQuestionsOfEachType = (shouldShowButtons) => {
       else if (user_questions[i].status === "") {
         nNew+=1;
       }else{
-        console.log("Error: status must be 'easy', 'hard', or ''");
+        // console.log("Error: status must be 'easy', 'hard', or ''");
       }
     }
     let countObject = {'nEasy':nEasy, 'nHard':nHard, 'nNew':nNew};
-    console.log('inside count questions');
-    console.log(countObject);
     showCount(countObject);
     if (shouldShowButtons) {
       showButtons(countObject);
     }
   });
-}
+};
 
 const onChangeQuestionStatus = (question, status) => {
   let user_question_id = question.id;
   let question_id = question['question'].id;
   let user_id = app.user.id;
   let notes = "";
-
-    console.log('inside on change');
-    console.log(question);
-    console.log("user_question ID " + user_question_id);
-    console.log("question_id " + question_id + "user_id " + user_id);
-    console.log("token" + app.user.token)
-      api.changeQuestionStatus( user_id, question_id, status,
+    // console.log('inside on change');
+    // console.log(question);
+    // console.log("user_question ID " + user_question_id);
+    // console.log("question_id " + question_id + "user_id " + user_id);
+    // console.log("token" + app.user.token)
+      api.changeQuestionStatus(user_id, question_id, status,
         notes,user_question_id)
         .then(function () {
           countQuestionsOfEachType(false);
         }).then(function () {
           if (ii >= questionsLength) {
-            console.log('length too much');
             countQuestionsOfEachType(true);
           }
   })
   .fail(function(error){
     reject(error);
   });
-}
+};
 
 const loopThroughQuestions = (questionsNew) => {
   questions = questionsNew;
-  console.log("new questions");
-  console.log(questions);
   questionsLength = questions.length;
   ii = 0;
-  console.log('first i = ' + ii);
-  console.log('questions length = ' + questionsLength);
-
   // hide start page
   $("#question").html(showQuestionTemplate(questions[ii]['question']));
   $("#answer").hide();
   if (firstTime) {
-
     firstTime = false;
 
   $("body").on('click', '.showAnswerButton', function () {
@@ -111,17 +94,10 @@ const loopThroughQuestions = (questionsNew) => {
    $("body").on('click', '.answerButton', function () {
     clickedButton = this.id;
 
-    console.log("click button " + clickedButton);
-    console.log("i = " + ii);
-
-    console.log(questions[ii]);
-
     if (clickedButton === "right") {
 
       let status = "easy";
       // because of variable scope has be be required here again
-      // let questionsEvents = require('./events.js');
-      // let question_id = questions[i].id;
       onChangeQuestionStatus(questions[ii], status);
       } else {
       let status = "hard";
@@ -134,14 +110,10 @@ const loopThroughQuestions = (questionsNew) => {
     if (ii<questionsLength) {
       $("#question").html(showQuestionTemplate(questions[ii]['question']));
       $("#answer").hide();
-
     }
-
-
    });
  }
-  };
-
+};
 
 const addNicknameSuccess = () => {
   $('#nickname').val(' ');
@@ -153,11 +125,6 @@ const addNicknameSuccess = () => {
     $('#nickname').addClass('borderless');
     $('#nickname').val(app.user.profile.nickname);
   });
-  // .then((res) => {
-  //   app.user.profile = res.user.profile;
-  // });
-  // console.log(data.user.);
-  console.log("app in add Nickname Success ", app);
 };
 
 const success = (data) => {
@@ -179,7 +146,6 @@ const changeQuestionStatusSuccess = (data) => {
 const failure = (error) => {
   console.error(error);
 };
-
 
 const createUserQuestionsSuccess = () => {
 };
