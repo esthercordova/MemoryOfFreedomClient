@@ -32,10 +32,14 @@ webpackJsonp([0],[
 	var authEvents = __webpack_require__(3);
 	var questionsEvents = __webpack_require__(8);
 
-	// On document ready
+	// On document ready, page load
 	$(function () {
 	  authEvents.addHandlers();
 	  questionsEvents.addHandlers();
+	  $('#welcomeModal').modal('show');
+	  $('#question').hide();
+	  $('#navSettings').hide();
+	  $('#navSignOut').hide();
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -228,7 +232,8 @@ webpackJsonp([0],[
 	'use strict';
 
 	var app = {
-	  host: 'https://memoryoffreedom.herokuapp.com'
+	  // host: 'https://memoryoffreedom.herokuapp.com',
+	  host: 'http://localhost:3000'
 	};
 
 	module.exports = app;
@@ -243,13 +248,6 @@ webpackJsonp([0],[
 
 	var questionsEvents = __webpack_require__(8);
 	var showStartTemplate = __webpack_require__(33);
-	// const showQuestionTemplate = require('../../../templates/showquestion.handlebars');
-
-	$(window).load(function () {
-	  $('#question').hide();
-	  $('#navSettings').hide();
-	  $('#navSignOut').hide();
-	});
 
 	var success = function success(data) {
 	  console.log("data in success is ", data);
@@ -277,6 +275,7 @@ webpackJsonp([0],[
 	};
 
 	var signInSuccess = function signInSuccess(data) {
+	  // assign received user to data.user
 	  app.user = data.user;
 	  if (app.user.profile) {
 	    $('#nicknameDelete').removeClass('hide');
@@ -285,7 +284,6 @@ webpackJsonp([0],[
 	    $('#nickname').val(app.user.profile.nickname);
 	    $('#welcomeInstructions').hide();
 	  }
-
 	  $(".start").html(showStartTemplate(data));
 	  $('#signInMessage').html('You successfully logged in!');
 	  $('#signUpMessage').html('');
@@ -297,7 +295,6 @@ webpackJsonp([0],[
 	  $('#navSettings').show();
 	  $('#navSignOut').show();
 	  $('#welcomeInstructions').hide();
-
 	  return data;
 	};
 
@@ -345,22 +342,8 @@ webpackJsonp([0],[
 	var ui = __webpack_require__(10);
 	var app = __webpack_require__(6);
 
-	var showChooseWhatToStudyTemplate = __webpack_require__(32);
+	// const showChooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
 
-	// const onPopulatingQuestions = () => {
-	//   $('#startQuestions').hide();
-	//   api.showQuestions()
-	//   .done(ui.populatingQuestions)
-	//   .fail(ui.failure);
-	// };
-	//
-	// const onShowStatictics = (event) => {
-	//   event.preventDefault();
-	//   api.getStatusStatistics()
-	//   .done(ui.gettingStatistics)
-	//   .fail(ui.failure);
-	// };
-	//
 	var onChooseWhatToStudy = function onChooseWhatToStudy() {
 	  ui.countQuestionsOfEachType(true);
 	};
@@ -374,16 +357,12 @@ webpackJsonp([0],[
 	  // get all of the new user_questions
 	  api.getUserQuestions().then(function (user_questions_object) {
 	    var user_questions = user_questions_object['user_questions'];
-	    console.log(user_questions);
 	    var questionsArray = [];
 	    for (var i in user_questions) {
-	      console.log(user_questions[i].status + "-----");
 	      if (user_questions[i].status === "") {
 	        questionsArray.push(user_questions[i]);
 	      }
 	    }
-	    console.log('in events button clicked');
-	    console.log(questionsArray);
 	    ui.loopThroughQuestions(questionsArray);
 	  });
 	};
@@ -392,19 +371,13 @@ webpackJsonp([0],[
 	  event.preventDefault();
 	  // get all of the new user_questions
 	  api.getUserQuestions().then(function (user_questions_object) {
-	    console.log('in easy bucket');
-	    console.log(user_questions_object);
 	    var user_questions = user_questions_object['user_questions'];
-	    console.log('user questions:');
-	    console.log(user_questions);
 	    var questionsArray = [];
 	    for (var i in user_questions) {
 	      if (user_questions[i].status === "easy") {
 	        questionsArray.push(user_questions[i]);
 	      }
 	    }
-	    console.log('in events button clicked');
-	    console.log(questionsArray);
 	    ui.loopThroughQuestions(questionsArray);
 	  });
 	};
@@ -413,18 +386,13 @@ webpackJsonp([0],[
 	  event.preventDefault();
 	  // get all of the new user_questions
 	  api.getUserQuestions().then(function (user_questions_object) {
-	    console.log('in hard bucket');
-	    console.log(user_questions_object);
 	    var user_questions = user_questions_object['user_questions'];
-	    // console.log(user_questions);
 	    var questionsArray = [];
 	    for (var i in user_questions) {
 	      if (user_questions[i].status === "hard") {
 	        questionsArray.push(user_questions[i]);
 	      }
 	    }
-	    console.log('in events button clicked');
-	    console.log(questionsArray);
 	    ui.loopThroughQuestions(questionsArray);
 	  });
 	};
@@ -441,9 +409,9 @@ webpackJsonp([0],[
 	    var notes = "";
 	    api.getJointTableId(question_id, user_id).then(function (data) {
 	      var user_question_table_id = data.user_questions[0].id;
-	      console.log(data);
-	      console.log("user_question ID " + data.user_questions[0].id);
-	      console.log("question_id " + question_id + "user_id " + user_id);
+	      // console.log(data);
+	      // console.log("user_question ID " + data.user_questions[0].id);
+	      // console.log("question_id " + question_id + "user_id " + user_id);
 	      console.log("token" + app.user.token).then(function () {
 	        api.changeQuestionStatus(user_id, question_id, status, notes, user_question_table_id);
 	      });
@@ -464,10 +432,10 @@ webpackJsonp([0],[
 	    var notes = "";
 	    api.getJointTableId(question_id, user_id).done(function (data) {
 	      var user_question_table_id = data.user_questions[0].id;
-	      console.log(data);
-	      console.log("user_question ID " + data.user_questions[0].id);
-	      console.log("question_id " + question_id + "user_id " + user_id);
-	      console.log("token" + app.user.token);
+	      // console.log(data);
+	      // console.log("user_question ID " + data.user_questions[0].id);
+	      // console.log("question_id " + question_id + "user_id " + user_id);
+	      // console.log("token" + app.user.token);
 	      api.changeQuestionStatus(user_id, question_id, status, notes, user_question_table_id);
 	    }).fail(function (data) {
 	      reject(error);
@@ -475,79 +443,15 @@ webpackJsonp([0],[
 	  });
 	};
 
-	// const onSaveNote = (event) => {
-	//   return new Promise(function(resolve,reject) {
-	//   event.preventDefault();
-	//   let question_id = $('.giveQuestionId').attr('data-id') - 1;
-	//   let user_id = app.user.id;
-	//   let notes = $("#note").val();
-	//   api.getJointTableId(question_id, user_id)
-	//   .done(function(data){
-	//     let user_question_table_id = data.user_questions[0].id;
-	//     api.saveNote( user_id,question_id, notes,user_question_table_id)
-	//   })
-	//   .fail(function(data){
-	//     reject(error);
-	//   });
-	// });
-	// };
-
-	// const onDeleteNote = (event) => {
-	//   return new Promise(function(resolve,reject) {
-	//   event.preventDefault();
-	//   let question_id = $('.giveQuestionId').attr('data-id') - 1;
-	//   let user_id = app.user.id;
-	//   let notes = "";
-	//   api.getJointTableId(question_id, user_id)
-	//   .done(function(data){
-	//     let user_question_table_id = data.user_questions[0].id;
-	//     api.saveNote( user_id,question_id, notes,user_question_table_id)
-	//   })
-	//   .fail(function(data){
-	//     reject(error);
-	//   });
-	// });
-	// };
-
-	// const onDeleteQuestion = (event) => {
-	//   return new Promise(function(resolve,reject) {
-	//   event.preventDefault();
-
-
-	//   let question_id = $('.giveQuestionId').attr('data-id');
-	//   let user_id = app.user.id;
-	//   console.log("question_id"+question_id);
-	//   console.log("user_id" +user_id);
-	//   api.getJointTableId(question_id, user_id)
-	//   .done(function(data){
-	//     let user_question_table_id = data.user_questions[0].id;
-	//     console.log("user_question_table_id" + user_question_table_id);
-	//     api.deleteQuestion(user_question_table_id)
-	//   })
-	//   .fail(function(data){
-	//     reject(error);
-	//   });
-	// });
-	// };
-
 	var onAddNickname = function onAddNickname(event) {
 	  event.preventDefault();
 	  var nickname = $('#nickname').val();
-	  console.log(nickname);
-	  api.addNickname(nickname)
-	  // .then(api.getProfileId)
-	  .done(ui.addNicknameSuccess).fail(ui.failure);
+	  api.addNickname(nickname).done(ui.addNicknameSuccess).fail(ui.failure);
 	};
 
 	var onDeleteNickname = function onDeleteNickname(event) {
-	  //   return new Promise(function(resolve,reject) {
 	  event.preventDefault();
-	  //
-	  console.log("app profile ", app);
-	  api.deleteNickname()
-	  // .then(ui.getProfileSuccess)
-	  // .then(api.deleteNickname)
-	  .then(ui.deleteNicknameSuccess).catch(function (error) {
+	  api.deleteNickname().then(ui.deleteNicknameSuccess).catch(function (error) {
 	    return console.error(error);
 	  });
 	};
@@ -557,22 +461,12 @@ webpackJsonp([0],[
 	  $(document).on('click', '#newBucket', onClickNewBucketButton);
 	  $(document).on('click', '#easyBucket', onClickEasyBucketButton);
 	  $(document).on('click', '#hardBucket', onClickHardBucketButton);
-
-	  // $(document).on('click','#saveNote', onSaveNote);
-	  // $(document).on('click','#deleteNote', onDeleteNote);
-	  // $(document).on('click','#deleteQuestion', onDeleteQuestion);
-
 	  $(document).on('click', '#nicknameSubmit', onAddNickname);
 	  $(document).on('click', '#nicknameDelete', onDeleteNickname);
 	};
 
 	module.exports = {
 	  addHandlers: addHandlers,
-	  // onPopulatingQuestions,
-	  // onShowStatictics,
-	  // onSaveNote,
-	  // onDeleteNote,
-	  // onDeleteQuestion,
 	  onAddNickname: onAddNickname,
 	  onDeleteNickname: onDeleteNickname
 	};
@@ -662,48 +556,6 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var saveNote = function saveNote(user_id, question_id, notes, user_question_table_id) {
-	  return $.ajax({
-	    method: 'PATCH',
-	    url: app.host + '/user_questions/' + user_question_table_id,
-	    headers: {
-	      Authorization: 'Token token=' + app.user.token
-	    },
-	    data: { "user_question": {
-	        "user_id": user_id,
-	        "question_id": question_id,
-	        "notes": notes
-	      }
-	    }
-	  });
-	};
-
-	var deleteNote = function deleteNote(user_id, question_id, notes, user_question_table_id) {
-	  return $.ajax({
-	    method: 'PATCH',
-	    url: app.host + '/user_questions/' + user_question_table_id,
-	    headers: {
-	      Authorization: 'Token token=' + app.user.token
-	    },
-	    data: { "user_question": {
-	        "user_id": user_id,
-	        "question_id": question_id,
-	        "notes": notes
-	      }
-	    }
-	  });
-	};
-
-	var deleteQuestion = function deleteQuestion(user_question_table_id) {
-	  return $.ajax({
-	    url: app.host + '/user_questions/' + user_question_table_id,
-	    method: 'DELETE',
-	    headers: {
-	      Authorization: 'Token token=' + app.user.token
-	    }
-	  });
-	};
-
 	var addNickname = function addNickname(nickname) {
 	  return $.ajax({
 	    url: app.host + '/profiles',
@@ -763,9 +615,6 @@ webpackJsonp([0],[
 	  });
 	};
 
-	// const populateHardBucket = () => {
-	//
-	// };
 	module.exports = {
 	  getUserQuestions: getUserQuestions,
 	  showQuestions: showQuestions,
@@ -773,13 +622,9 @@ webpackJsonp([0],[
 	  getStatusStatistics: getStatusStatistics,
 	  createUserQuestions: createUserQuestions,
 	  getJointTableId: getJointTableId,
-	  saveNote: saveNote,
-	  deleteNote: deleteNote,
-	  deleteQuestion: deleteQuestion,
 	  addNickname: addNickname,
 	  deleteNickname: deleteNickname,
-	  getProfileId: getProfileId,
-	  populateEasyBucket: populateEasyBucket
+	  getProfileId: getProfileId
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -791,43 +636,47 @@ webpackJsonp([0],[
 
 	var app = __webpack_require__(6);
 	var api = __webpack_require__(9);
-	var questionsEvents = __webpack_require__(8);
 
 	var showQuestionTemplate = __webpack_require__(11);
 	var showStatisticTemplate = __webpack_require__(31);
 	var chooseWhatToStudyTemplate = __webpack_require__(32);
 
-	$(window).load(function () {
-	  $('#welcomeModal').modal('show');
-	});
-
 	var questionsLength = void 0;
-	var ii = void 0;
+	var questionIndex = void 0;
 	var clickedButton = void 0;
 	var questions = void 0;
 	var firstTime = true;
 
+	/*
+	 * Display buttons to choose which questions to study
+	 * @param {Object} countObject
+	 */
 	var showButtons = function showButtons(countObject) {
-	  console.log('inside fun');
-	  console.log(countObject);
 	  $('.start').show();
 	  $('.start').html(chooseWhatToStudyTemplate(countObject));
 	};
 
+	/*
+	 * Display statistic template with information from countObject
+	 * @param {Object} countObject
+	 */
 	var showCount = function showCount(countObject) {
 	  $("#statistic").html(showStatisticTemplate(countObject));
 	};
 
+	/*
+	 * Count how many easy/hard/new questions there are
+	 * @param {Booloan} shouldShowButtons
+	 */
 	var countQuestionsOfEachType = function countQuestionsOfEachType(shouldShowButtons) {
+	  // get all the questions that belong to the user from the database
 	  api.getUserQuestions().then(function (user_questions_object) {
 	    var user_questions = user_questions_object['user_questions'];
-
 	    var nEasy = 0;
 	    var nHard = 0;
 	    var nNew = 0;
 
 	    for (var i in user_questions) {
-
 	      if (user_questions[i].status === "easy") {
 	        nEasy += 1;
 	      } else if (user_questions[i].status === "hard") {
@@ -839,8 +688,7 @@ webpackJsonp([0],[
 	      }
 	    }
 	    var countObject = { 'nEasy': nEasy, 'nHard': nHard, 'nNew': nNew };
-	    console.log('inside count questions');
-	    console.log(countObject);
+	    // invoke showCount function with countObject to display statistic
 	    showCount(countObject);
 	    if (shouldShowButtons) {
 	      showButtons(countObject);
@@ -848,22 +696,23 @@ webpackJsonp([0],[
 	  });
 	};
 
+	/*
+	 * Update the status of user question in database
+	 * @param {object} question
+	 * @param {string} status - "easy", "hard", ""
+	 */
 	var onChangeQuestionStatus = function onChangeQuestionStatus(question, status) {
 	  var user_question_id = question.id;
 	  var question_id = question['question'].id;
 	  var user_id = app.user.id;
 	  var notes = "";
-
-	  console.log('inside on change');
-	  console.log(question);
-	  console.log("user_question ID " + user_question_id);
-	  console.log("question_id " + question_id + "user_id " + user_id);
-	  console.log("token" + app.user.token);
+	  // make ajax PATCH to update question status
 	  api.changeQuestionStatus(user_id, question_id, status, notes, user_question_id).then(function () {
 	    countQuestionsOfEachType(false);
 	  }).then(function () {
-	    if (ii >= questionsLength) {
-	      console.log('length too much');
+	    // show which questions to study template when
+	    // all questions have been updated
+	    if (questionIndex >= questionsLength) {
 	      countQuestionsOfEachType(true);
 	    }
 	  }).fail(function (error) {
@@ -871,22 +720,18 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var loopThroughQuestions = function loopThroughQuestions(questionsNew) {
-	  questions = questionsNew;
-	  console.log("new questions");
-	  console.log(questions);
+	/*
+	 * Main loop to show and answer questions
+	 * @param {object} questions - all questions with same status
+	 */
+	var loopThroughQuestions = function loopThroughQuestions(questions) {
 	  questionsLength = questions.length;
-	  ii = 0;
-	  console.log('first i = ' + ii);
-	  console.log('questions length = ' + questionsLength);
-
-	  // hide start page
-	  $("#question").html(showQuestionTemplate(questions[ii]['question']));
+	  questionIndex = 0;
+	  $("#question").html(showQuestionTemplate(questions[questionIndex]['question']));
 	  $("#answer").hide();
 	  if (firstTime) {
-
 	    firstTime = false;
-
+	    // when show answer button is clicked it shows the answer and hides the button
 	    $("body").on('click', '.showAnswerButton', function () {
 	      $("#answer").show();
 	      $('.showAnswerButton').hide();
@@ -894,29 +739,18 @@ webpackJsonp([0],[
 	    // start to cycle through the questions
 	    $("body").on('click', '.answerButton', function () {
 	      clickedButton = this.id;
-
-	      console.log("click button " + clickedButton);
-	      console.log("i = " + ii);
-
-	      console.log(questions[ii]);
-
 	      if (clickedButton === "right") {
-
 	        var status = "easy";
 	        // because of variable scope has be be required here again
-	        // let questionsEvents = require('./events.js');
-	        // let question_id = questions[i].id;
-	        onChangeQuestionStatus(questions[ii], status);
+	        onChangeQuestionStatus(questions[questionIndex], status);
 	      } else {
 	        var _status = "hard";
-	        // let questionsEvents = require('./events.js');
-	        // let question_id = questions[i].id;
-	        onChangeQuestionStatus(questions[ii], _status);
+	        onChangeQuestionStatus(questions[questionIndex], _status);
 	      }
-	      ii++;
-
-	      if (ii < questionsLength) {
-	        $("#question").html(showQuestionTemplate(questions[ii]['question']));
+	      // keep track of question index to stop once max length is reached
+	      questionIndex++;
+	      if (questionIndex < questionsLength) {
+	        $("#question").html(showQuestionTemplate(questions[questionIndex]['question']));
 	        $("#answer").hide();
 	      }
 	    });
@@ -932,11 +766,6 @@ webpackJsonp([0],[
 	    $('#nickname').addClass('borderless');
 	    $('#nickname').val(app.user.profile.nickname);
 	  });
-	  // .then((res) => {
-	  //   app.user.profile = res.user.profile;
-	  // });
-	  // console.log(data.user.);
-	  console.log("app in add Nickname Success ", app);
 	};
 
 	var success = function success(data) {
