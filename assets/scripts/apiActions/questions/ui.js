@@ -13,9 +13,13 @@ let clickedButton;
 let questions;
 let firstTime = true;
 
+/*
+ * Adds two numbers
+ * @param {Number} a
+ * @param {Number} b
+ * @return {Number} sum
+ */
 const showButtons = (countObject) => {
-  console.log('inside fun');
-  console.log(countObject);
   $('.start').show();
   $('.start').html(chooseWhatToStudyTemplate(countObject));
 };

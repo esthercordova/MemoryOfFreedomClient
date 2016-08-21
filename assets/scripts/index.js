@@ -8,4 +8,7 @@ $(() => {
   authEvents.addHandlers();
   questionsEvents.addHandlers();
   $('#welcomeModal').modal('show');
+  $('#question').hide();
+  $('#navSettings').hide();
+  $('#navSignOut').hide();
 });

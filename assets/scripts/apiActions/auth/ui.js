@@ -4,12 +4,6 @@ const app = require('../../app.js');
 const questionsEvents = require('../questions/events.js');
 const showStartTemplate = require('../../../templates/start.handlebars');
 
-$(window).load(function(){
-     $('#question').hide();
-     $('#navSettings').hide();
-     $('#navSignOut').hide();
-  });
-
 const success = (data) => {
   console.log("data in success is ", data);
   if(data){
@@ -36,6 +30,7 @@ const changePasswordSuccess = () => {
 };
 
 const signInSuccess = (data) => {
+// assign received user to data.user
   app.user = data.user;
   if (app.user.profile) {
     $('#nicknameDelete').removeClass('hide');
