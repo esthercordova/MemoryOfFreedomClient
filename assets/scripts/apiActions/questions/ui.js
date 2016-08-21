@@ -8,27 +8,34 @@ const showStatisticTemplate = require('../../../templates/statistic.handlebars')
 const chooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
 
 let questionsLength;
-let ii;
+let questionIndex;
 let clickedButton;
 let questions;
 let firstTime = true;
 
 /*
- * Adds two numbers
- * @param {Number} a
- * @param {Number} b
- * @return {Number} sum
+ * Display buttons to choose which questions to study
+ * @param {Object} countObject
  */
 const showButtons = (countObject) => {
   $('.start').show();
   $('.start').html(chooseWhatToStudyTemplate(countObject));
 };
 
+/*
+ * Display statistic template with information from countObject
+ * @param {Object} countObject
+ */
 const showCount = (countObject) => {
   $("#statistic").html(showStatisticTemplate(countObject));
 };
 
+/*
+ * Count how many easy/hard/new questions there are
+ * @param {Booloan} shouldShowButtons
+ */
 const countQuestionsOfEachType = (shouldShowButtons) => {
+  // get all the questions that belong to the user from the database
   api.getUserQuestions()
   .then(function (user_questions_object) {
     let user_questions = user_questions_object['user_questions'];
@@ -45,10 +52,11 @@ const countQuestionsOfEachType = (shouldShowButtons) => {
       else if (user_questions[i].status === "") {
         nNew+=1;
       }else{
-        // console.log("Error: status must be 'easy', 'hard', or ''");
+        console.log("Error: status must be 'easy', 'hard', or ''");
       }
     }
     let countObject = {'nEasy':nEasy, 'nHard':nHard, 'nNew':nNew};
+    // invoke showCount function with countObject to display statistic
     showCount(countObject);
     if (shouldShowButtons) {
       showButtons(countObject);
@@ -56,63 +64,63 @@ const countQuestionsOfEachType = (shouldShowButtons) => {
   });
 };
 
+/*
+ * Update the status of user question in database
+ * @param {object} question
+ * @param {string} status - "easy", "hard", ""
+ */
 const onChangeQuestionStatus = (question, status) => {
   let user_question_id = question.id;
   let question_id = question['question'].id;
   let user_id = app.user.id;
   let notes = "";
-    // console.log('inside on change');
-    // console.log(question);
-    // console.log("user_question ID " + user_question_id);
-    // console.log("question_id " + question_id + "user_id " + user_id);
-    // console.log("token" + app.user.token)
-      api.changeQuestionStatus(user_id, question_id, status,
-        notes,user_question_id)
-        .then(function () {
-          countQuestionsOfEachType(false);
-        }).then(function () {
-          if (ii >= questionsLength) {
-            countQuestionsOfEachType(true);
-          }
+  // make ajax PATCH to update question status
+  api.changeQuestionStatus(user_id, question_id, status,notes,user_question_id)
+    .then(function () {
+      countQuestionsOfEachType(false);
+    }).then(function () {
+    // show which questions to study template when
+    // all questions have been updated
+      if (questionIndex >= questionsLength) {
+        countQuestionsOfEachType(true);
+      }
   })
   .fail(function(error){
     reject(error);
   });
 };
 
-const loopThroughQuestions = (questionsNew) => {
-  questions = questionsNew;
+/*
+ * Main loop to show and answer questions
+ * @param {object} questions - all questions with same status
+ */
+const loopThroughQuestions = (questions) => {
   questionsLength = questions.length;
-  ii = 0;
-  // hide start page
-  $("#question").html(showQuestionTemplate(questions[ii]['question']));
+  questionIndex = 0;
+  $("#question").html(showQuestionTemplate(questions[questionIndex]['question']));
   $("#answer").hide();
   if (firstTime) {
     firstTime = false;
-
-  $("body").on('click', '.showAnswerButton', function () {
-     $("#answer").show();
-     $('.showAnswerButton').hide();
+    // when show answer button is clicked it shows the answer and hides the button
+    $("body").on('click', '.showAnswerButton', function () {
+      $("#answer").show();
+      $('.showAnswerButton').hide();
    });
    // start to cycle through the questions
    $("body").on('click', '.answerButton', function () {
     clickedButton = this.id;
-
     if (clickedButton === "right") {
-
       let status = "easy";
       // because of variable scope has be be required here again
-      onChangeQuestionStatus(questions[ii], status);
+      onChangeQuestionStatus(questions[questionIndex], status);
       } else {
       let status = "hard";
-      // let questionsEvents = require('./events.js');
-      // let question_id = questions[i].id;
-      onChangeQuestionStatus(questions[ii], status);
+      onChangeQuestionStatus(questions[questionIndex], status);
     }
-    ii++;
-
-    if (ii<questionsLength) {
-      $("#question").html(showQuestionTemplate(questions[ii]['question']));
+    // keep track of question index to stop once max length is reached
+    questionIndex++;
+    if (questionIndex < questionsLength) {
+      $("#question").html(showQuestionTemplate(questions[questionIndex]['question']));
       $("#answer").hide();
     }
    });
