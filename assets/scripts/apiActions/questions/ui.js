@@ -127,16 +127,31 @@ const loopThroughQuestions = (questions) => {
  }
 };
 
+/*
+ * Add nickname to database
+ */
 const addNicknameSuccess = () => {
   $('#nickname').val(' ');
   api.getProfileId()
   .then((res) => {
     app.user.profile = res.user.profile;
+    // take care of display logic on user interface
     $('#nicknameDelete').removeClass('hide');
     $('#nicknameSubmit').addClass('hide');
     $('#nickname').addClass('borderless');
     $('#nickname').val(app.user.profile.nickname);
   });
+};
+
+/*
+ * Delete nickname from database
+ */
+const deleteNicknameSuccess = () => {
+  app.profiles = null;
+  $('#nicknameDelete').addClass('hide');
+  $('#nicknameSubmit').removeClass('hide');
+  $('#nickname').removeClass('borderless');
+  $('#nickname').val(' ');
 };
 
 const success = (data) => {
@@ -162,13 +177,6 @@ const failure = (error) => {
 const createUserQuestionsSuccess = () => {
 };
 
-const deleteNicknameSuccess = () => {
-  app.profiles = null;
-  $('#nicknameDelete').addClass('hide');
-  $('#nicknameSubmit').removeClass('hide');
-  $('#nickname').removeClass('borderless');
-  $('#nickname').val(' ');
-};
 
 const getProfileIdSuccess = (data) => {
   app.profile = data.profile;

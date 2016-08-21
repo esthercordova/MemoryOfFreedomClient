@@ -133,17 +133,6 @@ const getProfileId = () => {
 });
 };
 
-const populateEasyBucket = () => {
-  return $.ajax({
-    url: app.host + '/user_questions/easy',
-    method: "GET",
-    headers: {
-      Authorization: 'Token token=' + app.user.token,
-    }
-  });
-};
-
-
 module.exports = {
   getUserQuestions,
   showQuestions,
