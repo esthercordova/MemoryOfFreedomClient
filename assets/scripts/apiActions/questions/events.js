@@ -4,16 +4,22 @@ const api = require('./api');
 const ui = require('./ui');
 const app = require('../../app');
 
-// const showChooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
-
+/*
+* After stop button is clicked calles countQuestionsOfEachType function,
+* which keeps track of the question statistics and displays buttons to chooseWhatToStudy
+* what the user wants to study
+*/
 const onChooseWhatToStudy = () => {
   ui.countQuestionsOfEachType(true);
 };
 
-//first get joint table id then PATCH
-//Only difference between onChangeStatusEasy and onChangeStatusHard is the
-//harcoded status variable - when time refactor
-
+/*
+* Starts to display questions in the new bucket and pushes each questions
+* based on user input into easy or hard bucket
+*
+* Only difference between onClickEasyBucketButton, onClickHardBucketButton,
+* onClickNewBucketButtonis the harcoded status variable - refactoring would be good!
+*/
 const onClickNewBucketButton = (event) => {
   event.preventDefault();
   // get all of the new user_questions
@@ -30,6 +36,9 @@ const onClickNewBucketButton = (event) => {
   });
 };
 
+/*
+* Same as onClickNewBucketButton but takes care of button/status "easy"
+*/
 const onClickEasyBucketButton = (event) => {
   event.preventDefault();
   // get all of the new user_questions
@@ -46,6 +55,9 @@ const onClickEasyBucketButton = (event) => {
   });
 };
 
+/*
+* Same as onClickNewBucketButton but takes care of button/status "hard"
+*/
 const onClickHardBucketButton = (event) => {
   event.preventDefault();
   // get all of the new user_questions
@@ -62,62 +74,15 @@ const onClickHardBucketButton = (event) => {
   });
 };
 
+/*
+* Important for the count of unseen questions
+*/
 const onChangeQuestionStatus = () => {
-
 };
 
-// need to add in the end ui.gettingStatistics to update statistics on front end
-const onChangeStatusEasy = (event) => {
-  return new Promise(function(resolve,reject) {
-  event.preventDefault();
-  let user_id = app.user.id;
-  let question_id = $('.giveQuestionId').attr('data-id') - 1;
-  let status = "easy";
-  let notes = "";
-  api.getJointTableId(question_id, user_id)
-  .then(function(data){
-    let user_question_table_id = data.user_questions[0].id;
-    // console.log(data);
-    // console.log("user_question ID " + data.user_questions[0].id);
-    // console.log("question_id " + question_id + "user_id " + user_id);
-    console.log("token" + app.user.token).then(function() {
-      api.changeQuestionStatus( user_id,question_id,status,
-        notes,user_question_table_id);
-    });
-  })
-  .then(function(event){
-    api.getStatusStatistics()
-    .done(ui.gettingStatistics)
-    .fail(ui.failure);
-  })
-  .fail(function(error){
-    reject(error);
-  });
-});
-};
-
-const onChangeStatusHard = (event) => {
-  return new Promise(function(resolve,reject) {
-  event.preventDefault();
-  let user_id = app.user.id;
-  let question_id = $('.giveQuestionId').attr('data-id') - 1;
-  let status = "hard";
-  let notes = "";
-  api.getJointTableId(question_id, user_id)
-  .done(function(data){
-    let user_question_table_id = data.user_questions[0].id;
-    // console.log(data);
-    // console.log("user_question ID " + data.user_questions[0].id);
-    // console.log("question_id " + question_id + "user_id " + user_id);
-    // console.log("token" + app.user.token);
-    api.changeQuestionStatus( user_id,question_id,status, notes,user_question_table_id)
-  })
-  .fail(function(data){
-    reject(error);
-  });
-});
-};
-
+/*
+* Add nickname to database with AJAX call
+*/
 const onAddNickname = (event) => {
   event.preventDefault();
   let nickname = $('#nickname').val();
@@ -126,6 +91,9 @@ const onAddNickname = (event) => {
   .fail(ui.failure);
 };
 
+/*
+* Delete nickname in database with AJAX call
+*/
 const onDeleteNickname = (event) => {
   event.preventDefault();
   api.deleteNickname()

@@ -33,12 +33,14 @@ const signInSuccess = (data) => {
 // assign received user to data.user
   app.user = data.user;
   if (app.user.profile) {
+    // hanldes nickname ui
     $('#nicknameDelete').removeClass('hide');
     $('#nicknameSubmit').addClass('hide');
     $('#nickname').addClass('borderless');
     $('#nickname').val(app.user.profile.nickname);
     $('#welcomeInstructions').hide();
   }
+  // handles what to display after sign in
   $(".start").html(showStartTemplate(data));
   $('#signInMessage').html('You successfully logged in!');
   $('#signUpMessage').html('');
@@ -58,6 +60,7 @@ const signInFailure = () => {
 };
 
 const signOutSuccess = () => {
+  //handles what to display after sign out
   app.user = null;
   $('#nicknameDelete').addClass('hide');
   $('#nicknameSubmit').removeClass('hide');
