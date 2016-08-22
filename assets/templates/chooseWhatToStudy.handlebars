@@ -1,13 +1,16 @@
 <h1>Memory of Freedom</h1>
 
 <h3> Which questions do you want to study? </h1>
-
+<!--
+changed button names to right or wrong instead of easy or hard,
+seemed to be too confusing in user testing
+ -->
 {{#if nNew }}
-  <button id="newBucket" class="btn btn-grey">Unseen</button>
+  <button id="newBucket" class="btn btn-grey">unseen</button>
 {{/if}}
 {{#if nEasy }}
-  <button id="easyBucket" class="btn btn-blue">Easy</button>
+  <button id="easyBucket" class="btn btn-blue">right</button>
 {{/if}}
 {{#if nHard }}
-  <button id="hardBucket" class="btn btn-red">Hard</button>
+  <button id="hardBucket" class="btn btn-red">wrong</button>
 {{/if}}
