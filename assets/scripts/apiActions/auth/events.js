@@ -11,6 +11,9 @@ const signInSuccessCallback = function(){
       questionUi.countQuestionsOfEachType(true);
 };
 
+/*
+* Sign up with automatically sign in and then getting and looping through user_questions
+*/
 const onSignUp = function(event){
   event.preventDefault();
   let credentials = getFormFields(event.target);
@@ -34,6 +37,10 @@ const onSignUp = function(event){
   }).then(signInSuccessCallback);
 };
 
+/*
+* Sign in with calling signInSuccess to get numbers for statitic to
+* display on ui
+*/
 const onSignIn = function(event){
   event.preventDefault();
   let data = getFormFields(event.target);

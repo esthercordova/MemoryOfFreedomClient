@@ -92,7 +92,7 @@ const onAddNickname = (event) => {
 };
 
 /*
-* Delte nickname in database with AJAX call
+* Delete nickname in database with AJAX call
 */
 const onDeleteNickname = (event) => {
   event.preventDefault();
