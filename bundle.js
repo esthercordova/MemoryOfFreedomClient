@@ -61,6 +61,9 @@ webpackJsonp([0],[
 	  questionUi.countQuestionsOfEachType(true);
 	};
 
+	/*
+	* Sign up with automatically sign in and then getting and looping through user_questions
+	*/
 	var onSignUp = function onSignUp(event) {
 	  event.preventDefault();
 	  var credentials = getFormFields(event.target);
@@ -78,6 +81,10 @@ webpackJsonp([0],[
 	  }).then(signInSuccessCallback);
 	};
 
+	/*
+	* Sign in with calling signInSuccess to get numbers for statitic to
+	* display on ui
+	*/
 	var onSignIn = function onSignIn(event) {
 	  event.preventDefault();
 	  var data = getFormFields(event.target);
@@ -277,12 +284,14 @@ webpackJsonp([0],[
 	  // assign received user to data.user
 	  app.user = data.user;
 	  if (app.user.profile) {
+	    // hanldes nickname ui
 	    $('#nicknameDelete').removeClass('hide');
 	    $('#nicknameSubmit').addClass('hide');
 	    $('#nickname').addClass('borderless');
 	    $('#nickname').val(app.user.profile.nickname);
 	    $('#welcomeInstructions').hide();
 	  }
+	  // handles what to display after sign in
 	  $(".start").html(showStartTemplate(data));
 	  $('#signInMessage').html('You successfully logged in!');
 	  $('#signUpMessage').html('');
@@ -302,6 +311,7 @@ webpackJsonp([0],[
 	};
 
 	var signOutSuccess = function signOutSuccess() {
+	  //handles what to display after sign out
 	  app.user = null;
 	  $('#nicknameDelete').addClass('hide');
 	  $('#nicknameSubmit').removeClass('hide');
@@ -341,16 +351,22 @@ webpackJsonp([0],[
 	var ui = __webpack_require__(10);
 	var app = __webpack_require__(6);
 
-	// const showChooseWhatToStudyTemplate = require('../../../templates/chooseWhatToStudy.handlebars');
-
+	/*
+	* After stop button is clicked calles countQuestionsOfEachType function,
+	* which keeps track of the question statistics and displays buttons to chooseWhatToStudy
+	* what the user wants to study
+	*/
 	var onChooseWhatToStudy = function onChooseWhatToStudy() {
 	  ui.countQuestionsOfEachType(true);
 	};
 
-	//first get joint table id then PATCH
-	//Only difference between onChangeStatusEasy and onChangeStatusHard is the
-	//harcoded status variable - when time refactor
-
+	/*
+	* Starts to display questions in the new bucket and pushes each questions
+	* based on user input into easy or hard bucket
+	*
+	* Only difference between onClickEasyBucketButton, onClickHardBucketButton,
+	* onClickNewBucketButtonis the harcoded status variable - refactoring would be good!
+	*/
 	var onClickNewBucketButton = function onClickNewBucketButton(event) {
 	  event.preventDefault();
 	  // get all of the new user_questions
@@ -366,6 +382,9 @@ webpackJsonp([0],[
 	  });
 	};
 
+	/*
+	* Same as onClickNewBucketButton but takes care of button/status "easy"
+	*/
 	var onClickEasyBucketButton = function onClickEasyBucketButton(event) {
 	  event.preventDefault();
 	  // get all of the new user_questions
@@ -381,6 +400,9 @@ webpackJsonp([0],[
 	  });
 	};
 
+	/*
+	* Same as onClickNewBucketButton but takes care of button/status "hard"
+	*/
 	var onClickHardBucketButton = function onClickHardBucketButton(event) {
 	  event.preventDefault();
 	  // get all of the new user_questions
@@ -396,58 +418,23 @@ webpackJsonp([0],[
 	  });
 	};
 
+	/*
+	* Important for the count of unseen questions
+	*/
 	var onChangeQuestionStatus = function onChangeQuestionStatus() {};
 
-	// need to add in the end ui.gettingStatistics to update statistics on front end
-	var onChangeStatusEasy = function onChangeStatusEasy(event) {
-	  return new Promise(function (resolve, reject) {
-	    event.preventDefault();
-	    var user_id = app.user.id;
-	    var question_id = $('.giveQuestionId').attr('data-id') - 1;
-	    var status = "easy";
-	    var notes = "";
-	    api.getJointTableId(question_id, user_id).then(function (data) {
-	      var user_question_table_id = data.user_questions[0].id;
-	      // console.log(data);
-	      // console.log("user_question ID " + data.user_questions[0].id);
-	      // console.log("question_id " + question_id + "user_id " + user_id);
-	      console.log("token" + app.user.token).then(function () {
-	        api.changeQuestionStatus(user_id, question_id, status, notes, user_question_table_id);
-	      });
-	    }).then(function (event) {
-	      api.getStatusStatistics().done(ui.gettingStatistics).fail(ui.failure);
-	    }).fail(function (error) {
-	      reject(error);
-	    });
-	  });
-	};
-
-	var onChangeStatusHard = function onChangeStatusHard(event) {
-	  return new Promise(function (resolve, reject) {
-	    event.preventDefault();
-	    var user_id = app.user.id;
-	    var question_id = $('.giveQuestionId').attr('data-id') - 1;
-	    var status = "hard";
-	    var notes = "";
-	    api.getJointTableId(question_id, user_id).done(function (data) {
-	      var user_question_table_id = data.user_questions[0].id;
-	      // console.log(data);
-	      // console.log("user_question ID " + data.user_questions[0].id);
-	      // console.log("question_id " + question_id + "user_id " + user_id);
-	      // console.log("token" + app.user.token);
-	      api.changeQuestionStatus(user_id, question_id, status, notes, user_question_table_id);
-	    }).fail(function (data) {
-	      reject(error);
-	    });
-	  });
-	};
-
+	/*
+	* Add nickname to database with AJAX call
+	*/
 	var onAddNickname = function onAddNickname(event) {
 	  event.preventDefault();
 	  var nickname = $('#nickname').val();
 	  api.addNickname(nickname).done(ui.addNicknameSuccess).fail(ui.failure);
 	};
 
+	/*
+	* Delete nickname in database with AJAX call
+	*/
 	var onDeleteNickname = function onDeleteNickname(event) {
 	  event.preventDefault();
 	  api.deleteNickname().then(ui.deleteNicknameSuccess).catch(function (error) {
@@ -604,16 +591,6 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var populateEasyBucket = function populateEasyBucket() {
-	  return $.ajax({
-	    url: app.host + '/user_questions/easy',
-	    method: "GET",
-	    headers: {
-	      Authorization: 'Token token=' + app.user.token
-	    }
-	  });
-	};
-
 	module.exports = {
 	  getUserQuestions: getUserQuestions,
 	  showQuestions: showQuestions,
@@ -756,15 +733,30 @@ webpackJsonp([0],[
 	  }
 	};
 
+	/*
+	 * Add nickname to database
+	 */
 	var addNicknameSuccess = function addNicknameSuccess() {
 	  $('#nickname').val(' ');
 	  api.getProfileId().then(function (res) {
 	    app.user.profile = res.user.profile;
+	    // take care of display logic on user interface
 	    $('#nicknameDelete').removeClass('hide');
 	    $('#nicknameSubmit').addClass('hide');
 	    $('#nickname').addClass('borderless');
 	    $('#nickname').val(app.user.profile.nickname);
 	  });
+	};
+
+	/*
+	 * Delete nickname from database
+	 */
+	var deleteNicknameSuccess = function deleteNicknameSuccess() {
+	  app.profiles = null;
+	  $('#nicknameDelete').addClass('hide');
+	  $('#nicknameSubmit').removeClass('hide');
+	  $('#nickname').removeClass('borderless');
+	  $('#nickname').val(' ');
 	};
 
 	var success = function success(data) {
@@ -788,14 +780,6 @@ webpackJsonp([0],[
 	};
 
 	var createUserQuestionsSuccess = function createUserQuestionsSuccess() {};
-
-	var deleteNicknameSuccess = function deleteNicknameSuccess() {
-	  app.profiles = null;
-	  $('#nicknameDelete').addClass('hide');
-	  $('#nicknameSubmit').removeClass('hide');
-	  $('#nickname').removeClass('borderless');
-	  $('#nickname').val(' ');
-	};
 
 	var getProfileIdSuccess = function getProfileIdSuccess(data) {
 	  app.profile = data.profile;
@@ -836,7 +820,7 @@ webpackJsonp([0],[
 	    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
 	    + "</h4>\n<div id=\"showAnswerButton\">\n<button id=\"showAnswer\" class=\"btn btn-grey showAnswerButton\">Show me the answer!</button>\n</div>\n\n<div id=\"answer\">\n  <div class=\"answerLeft\">\n"
 	    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.answer : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-	    + "  </div>\n\n  <button id=\"right\" class=\"btn btn-blue answerButton\">Easy</button>\n  <button id=\"wrong\" class=\"btn btn-red answerButton\">Hard</button>\n  <button id=\"stop\" class=\"btn btn-grey\">Stop</button>\n\n\n</div>\n";
+	    + "  </div>\n\n<!-- changes button to right/wrong instead of easy/hard -->\n  <button id=\"right\" class=\"btn btn-blue answerButton\">right</button>\n  <button id=\"wrong\" class=\"btn btn-red answerButton\">wrong</button>\n  <button id=\"stop\" class=\"btn btn-grey\">stop</button>\n\n</div>\n";
 	},"useData":true});
 
 /***/ },
@@ -2023,7 +2007,7 @@ webpackJsonp([0],[
 	module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
 	    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-	  return "<h5> <b>Your Knowlege Bucketes </b></h5>\n\n<table style=\"width:25%\">\n  <tr>\n    <th>Unseen</th>\n    <th>Easy</th>\n    <th>Hard</th>\n  </tr>\n  <tr>\n    <td>"
+	  return "<h5> <b>Your Knowlege Bucketes </b></h5>\n\n<table style=\"width:25%\">\n  <tr>\n    <th>unseen</th>\n    <th>right</th>\n    <th>wrong</th>\n  </tr>\n  <tr>\n    <td>"
 	    + alias4(((helper = (helper = helpers.nNew || (depth0 != null ? depth0.nNew : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nNew","hash":{},"data":data}) : helper)))
 	    + "</td>\n    <td>"
 	    + alias4(((helper = (helper = helpers.nEasy || (depth0 != null ? depth0.nEasy : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nEasy","hash":{},"data":data}) : helper)))
@@ -2039,15 +2023,15 @@ webpackJsonp([0],[
 	var Handlebars = __webpack_require__(12);
 	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
-	    return "  <button id=\"newBucket\" class=\"btn btn-grey\">Unseen</button>\n";
+	    return "  <button id=\"newBucket\" class=\"btn btn-grey\">unseen</button>\n";
 	},"3":function(container,depth0,helpers,partials,data) {
-	    return "  <button id=\"easyBucket\" class=\"btn btn-blue\">Easy</button>\n";
+	    return "  <button id=\"easyBucket\" class=\"btn btn-blue\">right</button>\n";
 	},"5":function(container,depth0,helpers,partials,data) {
-	    return "  <button id=\"hardBucket\" class=\"btn btn-red\">Hard</button>\n";
+	    return "  <button id=\"hardBucket\" class=\"btn btn-red\">wrong</button>\n";
 	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
 	    var stack1, alias1=depth0 != null ? depth0 : {};
 
-	  return "<h1>Memory of Freedom</h1>\n\n<h3> Which questions do you want to study? </h1>\n\n"
+	  return "<h1>Memory of Freedom</h1>\n\n<h3> Which questions do you want to study? </h1>\n<!--\nchanged button names to right or wrong instead of easy or hard,\nseemed to be too confusing in user testing\n -->\n"
 	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nNew : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
 	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nEasy : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
 	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nHard : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
